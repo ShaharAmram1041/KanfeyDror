@@ -1,17 +1,24 @@
-Name: View info on website
+### Name:
+View info on website
 
-Description:The user can view details and information about the report system of 'Kanfei Dror' organization. 
+### Description:
+The user can view details and information about the report system of 'Kanfei Dror' organization. 
 
-Players: user,admin, database
+### Actors:
+user,admin, database
 
-Preconditions: -------
+### Preconditions:
+-------
 
-Basic flow:
+### Basic flow:
 	1) By default, the information will apear on the main screen.
 
-Alternate flow:--------
+### Alternate flow:
+--------
 
-Exception flow:--------
+### Exception flow:
+--------
 
 
-Post conditions:The user see the information
+### Post conditions:
+	The user see the information
