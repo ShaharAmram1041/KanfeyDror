@@ -5,7 +5,7 @@
 	The user can view details and information about the report system of 'Kanfei Dror' organization. 
 
 ### Actors:
-	user,admin, database
+	user,admin.
 
 ### Preconditions:
 	-------
@@ -21,4 +21,4 @@
 
 
 ### Post conditions:
-	The user see the information
+	The user will see the information.
