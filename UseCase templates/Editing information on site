@@ -4,18 +4,20 @@ Description: The admins will be able to edit the application contents as they wi
 
 Players: Admin, Database
 
+Description: The administrator will be able to edit information about the system by using the website.
+
 Preconditions: Logged in as admin
 
 Basic flow:
-	1) Click on menu
-	2) Menu showes up
-	3) Choose a page option from the menu
-	4) Click on 'Edit' on the top of the page
-  5) Edit the content
-  6) Click on 'Modify'
+	1) Click on login
+	2) Table of reports will show up
+	3) Click on the 'table edit button" 
+	4) Delete some content
+ 	5) Click on 'Modify'
 
 Alternate flow: ----------
 
 Exception flow: The admin edited the content but didn't click on 'Modify' ---> An exeption message wil pop up alarting that the chaneges wern't saved
 
-Post conditions: The page's content was modified and saved
+Post conditions: The information's content was modified and saved
+
