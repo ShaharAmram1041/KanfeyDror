@@ -1,24 +1,24 @@
 Name: login.
 
 Description:
-The user will have the ability to enter the app by  user name and password.
+The association members and the administrator will have the ability to enter the website by user name and password.
 
-Players: User, admin, data base
+Players: administrator and the members of the assocation.
 
 Preconditions:
-To login: If the user already signed up.
+To login: Must be a member of the association.
 
 
 Basic flow:
-	1) Open the app.
+	1) Open the website.
 	2) Insert username and password.
-	3) Optional: check box of keep me signed in
+	3) Optional: check box of keep me signed in.
 	4) Press login.
 
 Alternate flow:-------
 
 Exception flow:
-1) If the user insert a wrong password/username, the app will inform the user and won't let him enter.
+1) If the user insert a wrong password/username, the website will inform the user and won't let him enter.
 
 
 Post conditions:
