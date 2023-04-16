@@ -1,12 +1,14 @@
-# Name: login.
+Name: 
+	login
 
-Description:
-The association members and the administrator will have the ability to enter the website by user name and password.
+Brief Description:
+	The association members and the administrator will have the ability to enter the website by user name and password.
 
-Players: administrator and the members of the assocation.
+Actors:
+	administrator and the members of the assocation.
 
 Preconditions:
-To login: Must be a member of the association.
+	To login: Must be a member of the association.
 
 
 Basic flow:
@@ -15,11 +17,10 @@ Basic flow:
 	3) Optional: check box of keep me signed in.
 	4) Press login.
 
-Alternate flow:-------
 
 Exception flow:
-1) If the user insert a wrong password/username, the website will inform the user and won't let him enter.
+	1) If the user insert a wrong password/username, the website will inform the user and won't let him enter.
 
 
 Post conditions:
-The user will get into the website.
+	The user will get access to the data base.
