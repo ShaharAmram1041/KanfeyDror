@@ -1,0 +1,25 @@
+Name: login.
+
+Description:
+The user will have the ability to enter the app by  user name and password.
+
+Players: User, admin, data base
+
+Preconditions:
+To login: If the user already signed up.
+
+
+Basic flow:
+	1) Open the app.
+	2) Insert username and password.
+	3) Optional: check box of keep me signed in
+	4) Press login.
+
+Alternate flow:-------
+
+Exception flow:
+1) If the user insert a wrong password/username, the app will inform the user and won't let him enter.
+
+
+Post conditions:
+The user will get into the website.
