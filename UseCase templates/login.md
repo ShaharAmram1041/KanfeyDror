@@ -5,10 +5,10 @@
 	The association members and the administrator will have the ability to enter the website by user name and password.
 
 ### Actors:
-	administrator and the members of the assocation.
+	Administrator and the members of the assocation.
 
 ### Preconditions:
-	To login: Must be a member of the association.
+	Must be a member of the association.
 
 
 ### Basic flow:
