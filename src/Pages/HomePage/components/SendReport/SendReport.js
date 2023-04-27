@@ -1,6 +1,7 @@
 import React, { useState } from "react";
-import ContactForm from "./contactForm/ContactForm";
-function FollowReport() {
+import ContactForm from "../contactForm/ContactForm.js";
+
+function SendReport() {
   const [showModal, setShowModal] = useState(false);
 
   const toggleModal = () => {
@@ -10,10 +11,9 @@ function FollowReport() {
   return (
     <div>
       <button onClick={toggleModal}>הגשת דיווח</button>
-      {/* <textarea placeholder="...כתוב את התוכן כאן"></textarea> */}
       {showModal && <ContactForm />}
     </div>
   );
 }
 
-export default FollowReport;
+export default SendReport;
