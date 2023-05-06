@@ -1,5 +1,35 @@
+.LoginPage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+}
+
+.LoginPage input {
+  margin-bottom: 10px;
+  padding: 5px;
+  border-radius: 10px;
+  text-align: center;
+  width: 15%;
+}
+
+.LoginPage button {
+  padding: 10px 20px;
+  border-radius: 5px;
+}
+
+.LoginPage button:nth-of-type(1),
+.LoginPage button:nth-of-type(2) {
+  margin-top: 10px;
+}
+
+.LoginPage button:nth-of-type(2) {
+  margin-top: 20px;
+}
+
 /* GOOGLE BUTTOn */
-.login-with-google-btn {
+/* .login-with-google-btn {
   cursor: pointer;
   transition: background-color 0.3s, box-shadow 0.3s;
   padding: 5px 16px 12px 42px;
@@ -77,9 +107,9 @@
   background: none;
   font-size: 30px;
   cursor: pointer;
-}
+} */
 
-.post .postTextContainer {
+/* .post .postTextContainer {
   text-align: right;
 
   word-wrap: break-word;
@@ -88,4 +118,10 @@
   width: 100%;
   overflow: hidden;
   overflow-y: auto;
-}
+} */
+
+
+
+
+
+
