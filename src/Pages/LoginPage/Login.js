@@ -4,10 +4,12 @@ import app from "../../firebase_setup/firebase.js";
 import { useState } from 'react';
 
 
+
 function Login() {
   const auth = getAuth(app);
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
+
 
   // new account
   const signUp = () => {
@@ -45,6 +47,8 @@ function Login() {
        <button onClick={signUp}> Create Account</button>
        <button onClick={signIn}> Sign in</button>
     </div>
+    
+    
   );
 }
  
