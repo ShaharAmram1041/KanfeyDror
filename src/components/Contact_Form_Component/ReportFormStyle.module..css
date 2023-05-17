@@ -48,6 +48,17 @@ button {
   transition: all 0.3s ease-in-out;
 }
 
+
+.city-dropdown-container {
+  position: relative;
+}
+
+datalist {
+  position: absolute;
+  top: 100%;
+  left: 0;
+}
+
 button:hover {
   background-color: blueviolet;
 }

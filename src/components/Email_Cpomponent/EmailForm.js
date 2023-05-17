@@ -1,38 +1,56 @@
-import React, { useRef } from "react";
-import emailjs from "@emailjs/browser";
+import axios from 'axios';
+import React, { useState } from 'react';
 
 export const EmailForm = () => {
-  const form = useRef();
+  const [recipients, setRecipients] = useState('');
+  const [subject, setSubject] = useState('');
+  const [content, setContent] = useState('');
 
-  const sendEmail = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    emailjs
-      .sendForm(
-        "service_l0o54ze",
-        "template_muyf0yd",
-        form.current,
-        "5Qg7Cwk3OBUkK4qY8"
-      )
-      .then(
-        (result) => {
-          console.log(result.text);
-        },
-        (error) => {
-          console.log(error.text);
-        }
-      );
+    try {
+      await axios.post('http://localhost:3001/ReportsTable', {
+        recipients,
+        subject,
+        content,
+      });
+      //console.log('Email sent successfully');
+
+      // Show success alert
+      alert('ההודעה נשלחה בהצלחה');
+
+    } catch (error) {
+
+      // Show error alert
+      alert('ההודעה לא נשלחה');
+      console.error('Error sending email:', error);
+    }
   };
 
   return (
-    <form ref={form} onSubmit={sendEmail}>
-      <label>Name</label>
-      <input type="text" name="user_name" />
-      <label>Email</label>
-      <input type="email" name="user_email" />
-      <label>Message</label>
-      <textarea name="message" />
-      <input type="submit" value="Send" />
-    </form>
+    <div>
+      <form onSubmit={handleSubmit}>
+        <input
+          type="text"
+          placeholder="כתובת אימייל"
+          value={recipients}
+          onChange={(e) => setRecipients(e.target.value)}
+        />
+        <input
+          type="text"
+          placeholder="נושא"
+          value={subject}
+          onChange={(e) => setSubject(e.target.value)}
+        />
+        <textarea
+          placeholder="תוכן הודעה"
+          value={content}
+          onChange={(e) => setContent(e.target.value)}
+        ></textarea>
+        <button type="submit">שלח</button>
+      </form>
+    </div>
   );
 };
+
