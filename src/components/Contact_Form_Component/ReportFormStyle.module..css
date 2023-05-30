@@ -1,18 +1,18 @@
-form {
+/* form {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   width: 50%;
   margin: auto;
-  padding: 2rem;
+  padding: 2rem; 
   background-color: #f5f5f5;
-  border-radius: 10px;
+  border-radius: 10px; 
 }
 
 h1 {
   font-size: 2rem;
-  margin-bottom: 2rem;
+  margin-bottom: 2rem; 
 }
 
 div {
@@ -48,17 +48,6 @@ button {
   transition: all 0.3s ease-in-out;
 }
 
-
-.city-dropdown-container {
-  position: relative;
-}
-
-datalist {
-  position: absolute;
-  top: 100%;
-  left: 0;
-}
-
 button:hover {
   background-color: blueviolet;
 }
@@ -68,3 +57,14 @@ button:hover {
     width: 90%;
   }
 }
+
+.city-list-container {
+  max-height: 200px;
+  overflow-y: auto; 
+}
+
+.city-list { 
+  padding: 0.5rem;
+  margin: 0;
+  list-style: none;
+} */

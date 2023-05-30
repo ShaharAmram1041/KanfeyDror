@@ -4,6 +4,7 @@ import FollowSingleReportPage from "./pages/FollowSingleReportPage/FollowSingleR
 import Login from "./pages/LoginPage/Login";
 import ReportsTable from "./pages/ReportsTablePage/ReportsTable";
 import "./App.css";
+import DataGraphs from "./components/DataGraphs/DataGraphs";
 
 function App() {
   return (
@@ -20,6 +21,8 @@ function App() {
 
           {/* we want to protect this routs */}
           <Route path="ReportsTable" element={<ReportsTable />} />
+
+          <Route path="/DataGraphs" element={<DataGraphs />} />
 
           {/* catch all */}
           <Route path="*" element={<h1>PAGE NOT FOUND</h1>} />

@@ -1,5 +1,5 @@
 const sgMail = require('@sendgrid/mail');
-sgMail.setApiKey('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');
+sgMail.setApiKey();
 
 const express = require('express');
 const cors = require('cors');
@@ -17,7 +17,7 @@ app.post('/ReportsTable', (req, res) => {
 
   const msg = {
     to: recipients,
-    from: 'kanfeidrordb@gmail.com', // The sender email address
+    from: 'kanfeidror@gmail.com', // The sender email address
     subject: subject,
     html: content,
   };
