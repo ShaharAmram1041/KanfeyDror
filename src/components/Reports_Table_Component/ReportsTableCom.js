@@ -33,7 +33,7 @@ const ReportsTableCom = () => {
   const columns = useMemo(
     () => [
       {
-        accessorKey: "id",
+        accessorKey: "uuid",
         header: "מזהה ייחודי",
         enableSorting: false, //disable sorting on this column
         align: "right",
@@ -129,7 +129,7 @@ const ReportsTableCom = () => {
       },
       {
         accessorKey: "message",
-        header: "הודעות",
+        header: "תיאור המקרה",
         muiTableHeadCellProps: {
           align: "right",
         },
@@ -137,6 +137,72 @@ const ReportsTableCom = () => {
           align: "right",
         },
         enableEditing: false, //disable editing on this column
+      },
+      {
+        accessorKey: "SchoolName",
+        header: "שם בית הספר",
+        muiTableHeadCellProps: {
+          align: "right",
+        },
+        muiTableBodyCellProps: {
+          align: "right",
+        },
+        enableEditing: false, //disable editing on this column
+      },
+      {
+        accessorKey: "className",
+        header: "כיתה",
+        muiTableHeadCellProps: {
+          align: "right",
+        },
+        muiTableBodyCellProps: {
+          align: "right",
+        },
+        enableEditing: false, //disable editing on this column
+      },
+      {
+        accessorKey: "youthName",
+        header: "שם תנועת נוער",
+        muiTableHeadCellProps: {
+          align: "right",
+        },
+        muiTableBodyCellProps: {
+          align: "right",
+        },
+        enableEditing: false, //disable editing on this column
+      },
+      {
+        accessorKey: "otherPlace",
+        header: "מקום אחר",
+        muiTableHeadCellProps: {
+          align: "right",
+        },
+        muiTableBodyCellProps: {
+          align: "right",
+        },
+        enableEditing: false, //disable editing on this column
+      },
+      {
+        accessorKey: "reportDate",
+        header: "תאריך שליחת הדיווח",
+        muiTableHeadCellProps: {
+          align: "right",
+        },
+        muiTableBodyCellProps: {
+          align: "right",
+        },
+        enableEditing: false, //disable editing on this column
+      },
+      {
+        accessorKey: "treatment",
+        header: "הערות של העמותה",
+        muiTableHeadCellProps: {
+          align: "right",
+        },
+        muiTableBodyCellProps: {
+          align: "right",
+        },
+        enableEditing: true, //disable editing on this column
       },
     ],
     []
@@ -156,7 +222,7 @@ const ReportsTableCom = () => {
     const csvExporter = new ExportToCsv(csvOptions);
     csvExporter.generateCsv(
       rows.map((item) => [
-        item.original.id,
+        item.original.uuid,
         item.original.name,
         item.original.city,
         item.original.date,
@@ -175,7 +241,7 @@ const ReportsTableCom = () => {
     const csvExporter = new ExportToCsv(csvOptions);
     csvExporter.generateCsv(
       data.map((item) => [
-        item.id,
+        item.uuid,
         item.name,
         item.city,
         item.date,
@@ -281,6 +347,10 @@ const ReportsTableCom = () => {
             place: false,
             email: false,
             date: false,
+            schoolName: false,
+            Class: false,
+            youthName: false,
+            otherPlace: false
           },
         }}
         renderRowActions={({ row, table }) => (

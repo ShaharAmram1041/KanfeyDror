@@ -7,7 +7,6 @@ import ReportsTableCom from "../../components/Reports_Table_Component/ReportsTab
 export default function ReportsTable() {
   return (
     <div>
-      <Header />
       <ReportsTableCom />
     </div>
   );

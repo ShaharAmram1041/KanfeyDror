@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
-import Header from "../../components/Header_Component/Header";
 import { db } from "../../firebase_setup/firebase";
 import { getDoc, doc } from "firebase/firestore";
+import classes from "./FollowSingleReportPage.module.scss";
 
 export default function FollowSingleReportPage() {
   const [searchPerId, setSearchPerId] = useState("");
@@ -37,9 +37,9 @@ export default function FollowSingleReportPage() {
   }, [searchPerId]);
 
   return (
-    <div>
-      <Header />
+    <div className={classes.main_container}>
       <form
+        className={classes.form_container}
         name="search"
         onSubmit={(e) => {
           e.preventDefault();
@@ -49,21 +49,26 @@ export default function FollowSingleReportPage() {
           type="text"
           name="txt"
           readOnly={false}
+          className={classes.input}
           onChange={(event) => {
             setSearchPerId(event.target.value);
           }}
-        ></input>
-        <button type="submit">🔍</button>
+        />
+        <button type="submit" className={classes.submit_button}>
+          🔍
+        </button>
+        {report ? (
+          <div>
+            <h1 className={classes.report_id}>ID: {report.id}</h1>
+            <h3 className={classes.report_status}>status: {report.status}</h3>
+            {/* Render other properties of the report as needed */}
+          </div>
+        ) : (
+          <p className={classes.error_message}>
+            על מנת לברר את סטטוס הפנייה יש להקיש את הקוד הסודי שקיבלת
+          </p>
+        )}
       </form>
-      {report ? (
-        <div>
-          <h1>ID: {report.id}</h1>
-          <h3>status: {report.status}</h3>
-          {/* Render other properties of the report as needed */}
-        </div>
-      ) : (
-        <p>על מנת לברר את סטטוס הפנייה יש להקיש את הקוד הסודי שקיבלת </p>
-      )}
     </div>
   );
 }

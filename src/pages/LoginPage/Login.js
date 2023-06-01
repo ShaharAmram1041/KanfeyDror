@@ -33,7 +33,6 @@ export default function Login() {
 
   return (
     <div>
-      <Header />
       <h3>התחברות למערכת</h3>
       <input
         type="email"

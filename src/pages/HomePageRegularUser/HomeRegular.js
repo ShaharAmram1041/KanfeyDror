@@ -38,8 +38,7 @@ export default function Home() {
   return (
     <div>
       <div>
-        <Header />
-
+        
         {info.map((item) => (
           <div key={item.id}>
             <h3>{item.title}</h3>
