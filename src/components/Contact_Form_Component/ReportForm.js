@@ -2,7 +2,7 @@ import { uid } from "uid";
 import styles from "./ReportFormStyle.module..css";
 import { db } from "../../firebase_setup/firebase";
 import { addDoc, collection, getDocs, query, where} from "firebase/firestore";
-import React, { useState ,useEffect} from 'react';
+import React, { useState ,useEffect,useRef} from 'react';
 import cities from './cities.json';
 // import * as React from 'react';
 import Grid from '@mui/material/Grid';
@@ -14,6 +14,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import randomatic from 'randomatic';
 import Moment from 'react-moment';
+import emailjs from "@emailjs/browser";
 
 
 export default function ReportForm() {
@@ -30,7 +31,9 @@ export default function ReportForm() {
   const [schoolName, setSchoolName] = useState("");
   const [youthName, setYouthName] = useState("");
   const [otherPlace, setOtherPlace] = useState("");
+  const [isFormVisible, setFormVisible] = useState(true);
   const treatment = "";
+  const form = useRef();
 
   const writeReportToDB = async (e) => {
     e.preventDefault();
@@ -69,17 +72,6 @@ export default function ReportForm() {
         otherPlace,
       };
       
-      // if (place === "בית ספר") {
-      //   docData.SchoolName = schoolName;
-      //   docData.className = Class;
-      // }
-      // if (place === "תנועת נוער") {
-      //   docData.YouthName = youthName;
-      // }
-      // if (place === "אחר") {
-      //   docData.otherPlace = otherPlace;
-      // }
-      
       const docRef = await addDoc(collection(db, "Reports"), docData);
 
   
@@ -105,13 +97,12 @@ export default function ReportForm() {
     toast(
       <div dir="rtl">
         <p>כל הכבוד על הדיווח! זהו הקוד הסודי שלך: {secretCode}</p>
-        <p>כל הכבוד על הדיווח! נשמח להציע מספר פעולות שאפשר לעשות כבר עכשיו:</p>
+        <p>נשמח להציע מספר פעולות שאפשר לעשות כבר עכשיו</p>
         <ul>
           <li>פנייה פרטית למוחרם – להגיד לו בסודיות שאתה לא חלק מהחרם הזה ושלא כולם נגדו</li>
           <li>הזמנה לפעילות: הזמן את הילד לפעילות או משחק כלשהו. אפשר גם אחרי שעות הבית ספר בבית שלו או במגרש השכונתי</li>
           <li>שתף חברים קרובים: תשתף את החברים שאתה מאמין שיכולים לעזור ולהועיל ויחד תגשו לילד המוחרם</li>
           <li>שתף מורה או הורה</li>
-          <li> </li>
         </ul>
       </div>,
       {
@@ -120,6 +111,26 @@ export default function ReportForm() {
       }
     );
     setSecretCode(randomatic('Aa0', 8));
+  };
+
+  const sendEmail = (e) => {
+    e.preventDefault();
+
+    emailjs
+      .sendForm(
+        "service_vrmu408",
+        "template_tyq21ol",
+        form.current,
+        "QGS3yboIL2bq4kMnz"
+      )
+      .then(
+        (result) => {
+          console.log(result.text);
+        },
+        (error) => {
+          console.log(error.text);
+        }
+      );
   };
 
   
@@ -142,11 +153,19 @@ export default function ReportForm() {
       </Paper>
 
 {/* is anonymous */}
-      {isAno === true && isAno !== null && (
+      {isFormVisible && isAno === true && isAno !== null && (
         <div className="full-page-form">
         <Paper elevation={3} style={{ padding: '20px', maxWidth: '800px', margin: '0 auto' }} dir="rtl">
-          <form onSubmit={handleSendReport}>
-            <Grid container spacing={3} sx={{
+        <form
+              ref={form}
+              onSubmit={(event) => {
+                sendEmail(event);
+                handleSendReport(event);
+                setTimeout(() => {
+                  setFormVisible(false); // Close the form after 2 seconds
+                }, 2000);
+              }}
+            >            <Grid container spacing={3} sx={{
               width: '400px' ,
               "& label": {
                 left: "unset",
@@ -322,11 +341,19 @@ export default function ReportForm() {
     }
 
     {/* is not anonymous */}
-    {!isAno && isAno !== null && (
+    {isFormVisible && !isAno && isAno !== null && (
       <div className="full-page-form">
         <Paper elevation={3} style={{ padding: '20px', maxWidth: '800px', margin: '0 auto' }} dir="rtl">
-          <form onSubmit={handleSendReport}>
-            <Grid container spacing={3} sx={{
+        <form
+              ref={form}
+              onSubmit={(event) => {
+                sendEmail(event);
+                handleSendReport(event);
+                setTimeout(() => {
+                  setFormVisible(false); // Close the form after 2 seconds
+                }, 2000);
+              }}
+            >            <Grid container spacing={3} sx={{
               width: '400px' ,
               "& label": {
                 left: "unset",

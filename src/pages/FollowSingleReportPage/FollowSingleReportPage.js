@@ -1,40 +1,41 @@
 import React, { useState, useEffect } from "react";
 import { db } from "../../firebase_setup/firebase";
-import { getDoc, doc } from "firebase/firestore";
+import { getDocs, doc,query,collection,where } from "firebase/firestore";
 import classes from "./FollowSingleReportPage.module.scss";
 
 export default function FollowSingleReportPage() {
   const [searchPerId, setSearchPerId] = useState("");
   const [report, setReport] = useState(null);
 
-  useEffect(() => {
-    const fetchReport = async () => {
+    const fetchReport = async() => {
       if (searchPerId) {
-        const reportDoc = doc(db, "Reports", searchPerId);
-        const reportSnapshot = await getDoc(reportDoc);
-        if (reportSnapshot.exists()) {
-          const reportData = reportSnapshot.data();
-          setReport({
-            id: searchPerId,
-            name: reportData.name,
-            email: reportData.email,
-            city: reportData.city,
-            place: reportData.place,
-            date: reportData.date,
-            message: reportData.message,
-            urgency: reportData.urgency,
-            status: reportData.status,
+        const reportCollectionRef = collection(db, "Reports");
+        const querySnapshot = await getDocs(query(reportCollectionRef, where("uuid", "==", searchPerId)));
+        if (!querySnapshot.empty) {
+          querySnapshot.forEach((doc) => {
+            const reportData = doc.data();
+            setReport({
+                  uuid: reportData.uuid, // Use the "uuid" field from Firestore
+                  name: reportData.name,
+                  email: reportData.email,
+                  city: reportData.city,
+                  place: reportData.place,
+                  date: reportData.date,
+                  message: reportData.message,
+                  urgency: reportData.urgency,
+                  status: reportData.status,
+                });
           });
-        } else {
-          setReport(null);
         }
       } else {
         setReport(null);
       }
     };
 
-    fetchReport();
-  }, [searchPerId]);
+
+  const handleSubmit = async () => {
+    await fetchReport();
+  }
 
   return (
     <div className={classes.main_container}>
@@ -54,13 +55,17 @@ export default function FollowSingleReportPage() {
             setSearchPerId(event.target.value);
           }}
         />
-        <button type="submit" className={classes.submit_button}>
+        <button type="submit" className={classes.submit_button} onClick={(e) => {handleSubmit();  }}>
           🔍
         </button>
         {report ? (
           <div>
-            <h1 className={classes.report_id}>ID: {report.id}</h1>
-            <h3 className={classes.report_status}>status: {report.status}</h3>
+            <h1 style={{ direction: "rtl" }} className={classes.report_id}>
+              קוד סודי : {report.uuid}
+            </h1>
+            <h2 style={{ direction: "rtl" }} className={classes.report_status}>
+              סטטוס : {report.status}
+              </h2>
             {/* Render other properties of the report as needed */}
           </div>
         ) : (

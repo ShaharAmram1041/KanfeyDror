@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { collection, getDocs } from 'firebase/firestore';
-import { db } from '../../firebase_setup/firebase';
+import { collection, getDocs,query,where} from 'firebase/firestore';
+import { db} from '../../firebase_setup/firebase';
 import Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
 import cities from '../Contact_Form_Component/cities.json';
+
 
 import {
   Chart as ChartJS,
@@ -16,6 +17,7 @@ import {
   ArcElement,
 } from 'chart.js';
 import { Bar, Pie } from 'react-chartjs-2';
+// import { Direction } from 'react-toastify/dist/utils';
 
 ChartJS.register(
   CategoryScale,
@@ -31,6 +33,9 @@ function DataGraphs() {
   const [reports, setReports] = useState([]);
   const [year, setYear] = useState('');
   const [city, setCity] = useState('');
+  const [schoolNum, setSchoolNum] = useState(0);
+  const [youthNum, setYouthNum] = useState(0);
+  const [otherNum, setOtherNum] = useState(0);
   const [config, setConfig] = useState({
     chart: {
       type: 'line',
@@ -112,13 +117,11 @@ function DataGraphs() {
     return countMap;
   }, {});
 
-  const countArray = Object.values(placesCount);
-
   const CityData = {
-    labels: places,
+    labels: Object.keys(placesCount),
     datasets: [
       {
-        data: countArray,
+        data: Object.values(placesCount),
         backgroundColor: 'rgba(108,47,212,0.58)',
         borderColor: 'black',
         borderWidth: 1,
@@ -200,6 +203,84 @@ function DataGraphs() {
     setConfig(updatedConfig);
   }
   }
+
+  /*----------------------------------------by places =>[school , Youth, other ]-----------------------------------*/
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const reportCollectionRef = collection(db, "Reports");
+      const querySnapshot1 = await getDocs(query(reportCollectionRef, where("place", "==", "בית ספר")));
+      const querySnapshot2 = await getDocs(query(reportCollectionRef, where("place", "==", "תנועת נוער")));
+      const querySnapshot3 = await getDocs(query(reportCollectionRef, where("place", "==", "אחר")));
+      const allQuerySnapshot = await getDocs(query(reportCollectionRef));
+
+      if (allQuerySnapshot.size !== 0) {
+        const schoolPercentage = (querySnapshot1.size / allQuerySnapshot.size) * 100;
+        const youthPercentage = (querySnapshot2.size / allQuerySnapshot.size) * 100;
+        const otherPercentage = (querySnapshot3.size / allQuerySnapshot.size) * 100;
+
+        setSchoolNum(schoolPercentage);
+        setYouthNum(youthPercentage);
+        setOtherNum(otherPercentage);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+
+const config1 = ( {
+  chart: {
+      plotBackgroundColor: null,
+      plotBorderWidth: null,
+      plotShadow: false,
+      type: 'pie'
+  },
+  title: {
+      text: 'חלוקת מקומות שבהם נעשים חרמות',
+      align: 'center',
+  },
+  tooltip: {
+    pointFormat: '<b>{series.name}</b>: {point.y}%'
+  },
+  accessibility: {
+      point: {
+          valueSuffix: '%'
+      }
+  },
+  plotOptions: {
+      pie: {
+          allowPointSelect: true,
+          cursor: 'pointer',
+          dataLabels: {
+              enabled: true,
+              format: ' {point.percentage:.1f}% : <b>{point.name}</b>'
+          }
+      }
+  },
+  series: [{
+      colorByPoint: true,
+      data: [
+        {
+          name: 'בתי ספר',
+          y: schoolNum,
+          sliced: true,
+          selected: true
+        },
+        schoolNum !== 0 && {
+          name: 'תנועות נוער',
+          y: youthNum
+        },
+        otherNum !== 0 && {
+          name: 'אחר',
+          y: otherNum
+        }
+      ].filter(Boolean) // Remove any falsy values
+  }]
+});
+
+
+
 
   return (
     <div>
@@ -318,6 +399,17 @@ function DataGraphs() {
       highcharts={Highcharts} 
       options={config} />
     </div>
+
+    <div>
+      <HighchartsReact
+        highcharts={Highcharts}
+        options={config1}
+      />
+    </div>
+
+
+
+    
     </div>
   );
 }

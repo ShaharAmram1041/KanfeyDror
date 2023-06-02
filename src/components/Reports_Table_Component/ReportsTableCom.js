@@ -6,7 +6,7 @@ import {
   getDocs,
   updateDoc,
   doc,
-  deleteDoc,
+  deleteDoc,query,where,
 } from "firebase/firestore";
 import { EmailForm } from "../Email_Cpomponent/EmailForm";
 import MaterialReactTable from "material-react-table";
@@ -139,7 +139,7 @@ const ReportsTableCom = () => {
         enableEditing: false, //disable editing on this column
       },
       {
-        accessorKey: "SchoolName",
+        accessorKey: "schoolName",
         header: "שם בית הספר",
         muiTableHeadCellProps: {
           align: "right",
@@ -150,7 +150,7 @@ const ReportsTableCom = () => {
         enableEditing: false, //disable editing on this column
       },
       {
-        accessorKey: "className",
+        accessorKey: "Class",
         header: "כיתה",
         muiTableHeadCellProps: {
           align: "right",
@@ -252,7 +252,6 @@ const ReportsTableCom = () => {
         item.message,
       ])
     );
-    // console.log(data);
   };
 
   useEffect(() => {
@@ -261,7 +260,6 @@ const ReportsTableCom = () => {
         const querySnapshot = await getDocs(collection(db, "Reports"));
         const newData = querySnapshot.docs.map((doc) => ({
           ...doc.data(),
-          id: doc.id,
         }));
         setData(newData);
       } catch (error) {
@@ -273,14 +271,25 @@ const ReportsTableCom = () => {
   }, []);
 
   const handleDelete = async (id) => {
-    const confirmed = window.confirm(
-      "Are you sure you want to delete this report?"
-    );
+    const confirmed = window.confirm("Are you sure you want to delete this report?");
     if (confirmed) {
       try {
-        const reportDocRef = doc(db, "Reports", id);
-        await deleteDoc(reportDocRef);
-        setData(data.filter((item) => item.id !== id));
+        const reportCollectionRef = collection(db, "Reports");
+        const querySnapshot = await getDocs(query(reportCollectionRef, where("uuid", "==", id)));
+        
+        if (!querySnapshot.empty) {
+          let documentId = null;
+          querySnapshot.forEach((docSnapshot) => {
+            documentId = docSnapshot.id;
+          });
+          
+          if (documentId !== null) {
+            const reportDocRef = doc(db, "Reports", documentId);
+            await deleteDoc(reportDocRef);
+            
+            setData((prevData) => prevData.filter((item) => item.uuid !== id));
+          }
+        }
       } catch (error) {
         console.error("Error deleting report: ", error);
       }
@@ -289,13 +298,19 @@ const ReportsTableCom = () => {
 
   const handleSaveRow = async ({ exitEditingMode, row, values }) => {
     try {
-      const reportDocRef = doc(db, "Reports", values.id);
-      await updateDoc(reportDocRef, values);
-      setData((prevData) => {
-        const updatedData = [...prevData];
-        updatedData[row.index] = values;
-        return updatedData;
-      });
+      const reportCollectionRef = collection(db, "Reports");
+      const querySnapshot = await getDocs(query(reportCollectionRef));
+
+      if (querySnapshot.size > 0) {
+          const docSnapshot = querySnapshot.docs[row.index];
+          const reportDocRef = doc(db, "Reports", docSnapshot.id);
+          await updateDoc(reportDocRef, values);
+          setData((prevData) => {
+            const updatedData = [...prevData];
+            updatedData[row.index] = values;
+            return updatedData;
+          });
+      } 
     } catch (error) {
       console.error("Error saving report: ", error);
     }
@@ -373,7 +388,7 @@ const ReportsTableCom = () => {
             <Tooltip title="מחיקה">
               <IconButton
                 color="error"
-                onClick={() => handleDelete(row.original.id)}
+                onClick={() => handleDelete(row.original.uuid)}
               >
                 <DeleteIcon />
               </IconButton>

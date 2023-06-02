@@ -6,7 +6,7 @@ import { Grid ,TextField,MenuItem} from '@mui/material';
 
 
 export const EmailForm = ({ c }) => {
-  const [recipients, setRecipients] = useState('');
+  const [recipients, setRecipients] = useState([]);
   const [subject, setSubject] = useState('');
   const [content, setContent] = useState('');
   const [city, setCity] = useState(c);
@@ -38,8 +38,14 @@ export const EmailForm = ({ c }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if(!isEmailValid || email === "" || city === "")
-      return;
+    console.log("hrlo!");
+    if(!isEmailValid || city === ""){
+      console.log("hrlo!ssss");
+      console.log("im email"+email);
+      console.log("hrlcity" + city);
+      console.log("hrlo!ssss" + !isEmailValid);
+      return;}
+      
     try {
       await axios.post('http://localhost:3001/ReportsTable', {
         recipients,
@@ -50,7 +56,7 @@ export const EmailForm = ({ c }) => {
       // Show success alert
     alert('ההודעה נשלחה בהצלחה');
     // Clear form fields
-    setRecipients('');
+    setRecipients([]);
     setSubject('');
     setContent('');
 
@@ -65,10 +71,27 @@ export const EmailForm = ({ c }) => {
   }
 
   const handleRecipientChange = (e) => {
-    setRecipients(e.target.value);
-    setEmail(e.target.value);
-    const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
-    setIsEmailValid(emailRegex.test(e.target.value));
+    let selectedValues = [];
+    if (e.target.value !== "") {
+      selectedValues = Array.isArray(e.target.value) ? e.target.value : [e.target.value];
+    }
+  
+    setRecipients(selectedValues);
+  
+    let isValid = true;
+    if (selectedValues.length > 0) {
+      selectedValues.forEach((email) => {
+        const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
+        if (!emailRegex.test(email)) {
+          isValid = false;
+        }
+      });
+    }
+  
+    setIsEmailValid(isValid);
+    // setEmail(e.target.value);
+    // const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
+    // setIsEmailValid(emailRegex.test(e.target.value));
   };
 
   // const writeEmailsToDB = async (e) => {
@@ -179,31 +202,36 @@ export const EmailForm = ({ c }) => {
           {/* The city exists in the database */}
           {existingEmails.length > 0 && (
             <Grid item sx={{ width: '400px' }}>
-              <TextField
-                select
-                label="בחר כתובת אימייל מהמאגר"
-                variant="filled"
-                sx={{
-                  width: '400px' ,
-                  "& label": {
-                    left: "unset",
-                    right: "2.75rem",
-                    transformOrigin: "right",
-                    fontSize: "0.8rem",
-                  },
-                  "& legend": {
-                    textAlign: "left",
-                    fontSize: "0.6rem",
-                  },
-                }}
-                value={existingEmails.includes(recipients) ? recipients : ''}
-                onChange={handleRecipientChange}
-                fullWidth
-              >
-                <MenuItem value="">
-                  <em>בחר כתובת אימייל מהמאגר</em>
-                </MenuItem>
-                {existingEmails.filter(email => email !== '').map((existingEmail) => (
+             <TextField
+              select
+              label="בחר כתובת אימייל מהמאגר"
+              variant="filled"
+              sx={{
+                width: '400px',
+                "& label": {
+                  left: "unset",
+                  right: "2.75rem",
+                  transformOrigin: "right",
+                  fontSize: "0.8rem",
+                },
+                "& legend": {
+                  textAlign: "left",
+                  fontSize: "0.6rem",
+                },
+              }}
+              value={recipients}
+              onChange={handleRecipientChange}
+              fullWidth
+              SelectProps={{
+                multiple: true,
+              }}
+            >
+              <MenuItem disabled value="">
+                {/* <em>בחר כתובת אימייל מהמאגר</em> */}
+              </MenuItem>
+              {existingEmails
+                .filter((email) => email !== '')
+                .map((existingEmail) => (
                   <MenuItem key={existingEmail} value={existingEmail}>
                     {existingEmail}
                   </MenuItem>
@@ -214,6 +242,7 @@ export const EmailForm = ({ c }) => {
 
           <Grid item >
             <TextField
+              required
               label="הזן כתובת אי מייל"
               variant="filled"
               placeholder="הזן כתובת"
@@ -240,6 +269,7 @@ export const EmailForm = ({ c }) => {
 
           <Grid item>
         <TextField
+          required
           label="נושא ההודעה"
           variant="filled"
           placeholder="נושא"
@@ -263,6 +293,7 @@ export const EmailForm = ({ c }) => {
       </Grid>
       <Grid item>
           <TextField
+              required
               type="text"
               label = "תוכן ההודעה"
               variant="filled"
