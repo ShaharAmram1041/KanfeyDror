@@ -11,6 +11,7 @@ function LogoutButton() {
     try {
       await signOut(auth);
       navigate("/");
+      window.location.reload();
     } catch (e) {
       console.log(e.code);
     }

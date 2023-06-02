@@ -5,6 +5,9 @@ import Login from "./pages/LoginPage/Login";
 import ReportsTable from "./pages/ReportsTablePage/ReportsTable";
 import "./App.css";
 import DataGraphs from "./components/DataGraphs/DataGraphs";
+import AddAdministrator from "./pages/AddAdministratorPage/AddAdministrator";
+import RemoveAdministrator from "./pages/RemoveAdministratorPage/RemoveAdministrator";
+
 
 function App() {
   return (
@@ -23,6 +26,10 @@ function App() {
           <Route path="ReportsTable" element={<ReportsTable />} />
 
           <Route path="/DataGraphs" element={<DataGraphs />} />
+
+          <Route path="/AddAdministrator" element={<AddAdministrator />} />
+
+          <Route path="/RemoveAdministrator" element={<RemoveAdministrator />} />
 
           {/* catch all */}
           <Route path="*" element={<h1>PAGE NOT FOUND</h1>} />

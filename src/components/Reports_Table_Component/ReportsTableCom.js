@@ -1,12 +1,14 @@
 import React, { useMemo, useEffect, useState } from "react";
 import { db } from "../../firebase_setup/firebase";
 import { Link } from "react-router-dom";
+import { getAuth } from "firebase/auth";
 import {
   collection,
   getDocs,
   updateDoc,
   doc,
-  deleteDoc,
+  getDoc,
+  deleteDoc,query,where,
 } from "firebase/firestore";
 import { EmailForm } from "../Email_Cpomponent/EmailForm";
 import MaterialReactTable from "material-react-table";
@@ -26,6 +28,7 @@ const ReportsTableCom = () => {
   const [showEmailForm, setShowEmailForm] = useState(false);
   const [city, setCity] = useState("");
   const [showExport, setShowExport] = useState(false);
+  const [userAccess, setUserAccess] = useState(null);
 
   useEffect(() => {
     data.length > 0 ? setShowExport(true) : setShowExport(false);
@@ -33,7 +36,7 @@ const ReportsTableCom = () => {
   const columns = useMemo(
     () => [
       {
-        accessorKey: "id",
+        accessorKey: "uuid",
         header: "מזהה ייחודי",
         enableSorting: false, //disable sorting on this column
         align: "right",
@@ -129,7 +132,7 @@ const ReportsTableCom = () => {
       },
       {
         accessorKey: "message",
-        header: "הודעות",
+        header: "תיאור המקרה",
         muiTableHeadCellProps: {
           align: "right",
         },
@@ -137,6 +140,72 @@ const ReportsTableCom = () => {
           align: "right",
         },
         enableEditing: false, //disable editing on this column
+      },
+      {
+        accessorKey: "schoolName",
+        header: "שם בית הספר",
+        muiTableHeadCellProps: {
+          align: "right",
+        },
+        muiTableBodyCellProps: {
+          align: "right",
+        },
+        enableEditing: false, //disable editing on this column
+      },
+      {
+        accessorKey: "Class",
+        header: "כיתה",
+        muiTableHeadCellProps: {
+          align: "right",
+        },
+        muiTableBodyCellProps: {
+          align: "right",
+        },
+        enableEditing: false, //disable editing on this column
+      },
+      {
+        accessorKey: "youthName",
+        header: "שם תנועת נוער",
+        muiTableHeadCellProps: {
+          align: "right",
+        },
+        muiTableBodyCellProps: {
+          align: "right",
+        },
+        enableEditing: false, //disable editing on this column
+      },
+      {
+        accessorKey: "otherPlace",
+        header: "מקום אחר",
+        muiTableHeadCellProps: {
+          align: "right",
+        },
+        muiTableBodyCellProps: {
+          align: "right",
+        },
+        enableEditing: false, //disable editing on this column
+      },
+      {
+        accessorKey: "reportDate",
+        header: "תאריך שליחת הדיווח",
+        muiTableHeadCellProps: {
+          align: "right",
+        },
+        muiTableBodyCellProps: {
+          align: "right",
+        },
+        enableEditing: false, //disable editing on this column
+      },
+      {
+        accessorKey: "treatment",
+        header: "הערות של העמותה",
+        muiTableHeadCellProps: {
+          align: "right",
+        },
+        muiTableBodyCellProps: {
+          align: "right",
+        },
+        enableEditing: true, //disable editing on this column
       },
     ],
     []
@@ -156,7 +225,7 @@ const ReportsTableCom = () => {
     const csvExporter = new ExportToCsv(csvOptions);
     csvExporter.generateCsv(
       rows.map((item) => [
-        item.original.id,
+        item.original.uuid,
         item.original.name,
         item.original.city,
         item.original.date,
@@ -175,7 +244,7 @@ const ReportsTableCom = () => {
     const csvExporter = new ExportToCsv(csvOptions);
     csvExporter.generateCsv(
       data.map((item) => [
-        item.id,
+        item.uuid,
         item.name,
         item.city,
         item.date,
@@ -186,7 +255,6 @@ const ReportsTableCom = () => {
         item.message,
       ])
     );
-    // console.log(data);
   };
 
   useEffect(() => {
@@ -195,7 +263,6 @@ const ReportsTableCom = () => {
         const querySnapshot = await getDocs(collection(db, "Reports"));
         const newData = querySnapshot.docs.map((doc) => ({
           ...doc.data(),
-          id: doc.id,
         }));
         setData(newData);
       } catch (error) {
@@ -207,14 +274,25 @@ const ReportsTableCom = () => {
   }, []);
 
   const handleDelete = async (id) => {
-    const confirmed = window.confirm(
-      "Are you sure you want to delete this report?"
-    );
+    const confirmed = window.confirm("Are you sure you want to delete this report?");
     if (confirmed) {
       try {
-        const reportDocRef = doc(db, "Reports", id);
-        await deleteDoc(reportDocRef);
-        setData(data.filter((item) => item.id !== id));
+        const reportCollectionRef = collection(db, "Reports");
+        const querySnapshot = await getDocs(query(reportCollectionRef, where("uuid", "==", id)));
+        
+        if (!querySnapshot.empty) {
+          let documentId = null;
+          querySnapshot.forEach((docSnapshot) => {
+            documentId = docSnapshot.id;
+          });
+          
+          if (documentId !== null) {
+            const reportDocRef = doc(db, "Reports", documentId);
+            await deleteDoc(reportDocRef);
+            
+            setData((prevData) => prevData.filter((item) => item.uuid !== id));
+          }
+        }
       } catch (error) {
         console.error("Error deleting report: ", error);
       }
@@ -223,13 +301,19 @@ const ReportsTableCom = () => {
 
   const handleSaveRow = async ({ exitEditingMode, row, values }) => {
     try {
-      const reportDocRef = doc(db, "Reports", values.id);
-      await updateDoc(reportDocRef, values);
-      setData((prevData) => {
-        const updatedData = [...prevData];
-        updatedData[row.index] = values;
-        return updatedData;
-      });
+      const reportCollectionRef = collection(db, "Reports");
+      const querySnapshot = await getDocs(query(reportCollectionRef));
+
+      if (querySnapshot.size > 0) {
+          const docSnapshot = querySnapshot.docs[row.index];
+          const reportDocRef = doc(db, "Reports", docSnapshot.id);
+          await updateDoc(reportDocRef, values);
+          setData((prevData) => {
+            const updatedData = [...prevData];
+            updatedData[row.index] = values;
+            return updatedData;
+          });
+      } 
     } catch (error) {
       console.error("Error saving report: ", error);
     }
@@ -240,6 +324,30 @@ const ReportsTableCom = () => {
     setCity(row.original.city);
     setShowEmailForm(!showEmailForm);
   };
+
+
+  useEffect(() => {
+    const fetchUserAccess = async () => {
+      try {
+        const auth = getAuth();
+        const user = auth.currentUser;
+        if (user) {
+          const email = user.email;
+          const adminUserDocRef = doc(db, "AdminUsers", email);
+          const adminUserDocSnapshot = await getDoc(adminUserDocRef);
+          if (adminUserDocSnapshot.exists()) {
+            setUserAccess("Admin");
+          } else {
+            setUserAccess("Regular");
+          }
+        }
+      } catch (error) {
+        console.error("Error fetching user access: ", error);
+      }
+    };
+  
+    fetchUserAccess();
+  }, []);
 
   return (
     <>
@@ -281,6 +389,10 @@ const ReportsTableCom = () => {
             place: false,
             email: false,
             date: false,
+            schoolName: false,
+            Class: false,
+            youthName: false,
+            otherPlace: false
           },
         }}
         renderRowActions={({ row, table }) => (
@@ -300,13 +412,23 @@ const ReportsTableCom = () => {
               </IconButton>
             </Tooltip>
 
-            <Tooltip title="מחיקה">
-              <IconButton
-                color="error"
-                onClick={() => handleDelete(row.original.id)}
-              >
-                <DeleteIcon />
-              </IconButton>
+            <Tooltip
+              title={
+                userAccess === "Admin"
+                  ? "מחיקה"
+                  : "אין לך הרשאה לגשת לכאן"
+              }
+              placement="top"
+            >
+              <span>
+                <IconButton
+                  color="error"
+                  disabled={userAccess !== "Admin"}
+                  onClick={() => handleDelete(row.original.id)}
+                >
+                  <DeleteIcon />
+                </IconButton>
+              </span>
             </Tooltip>
           </Box>
         )}
