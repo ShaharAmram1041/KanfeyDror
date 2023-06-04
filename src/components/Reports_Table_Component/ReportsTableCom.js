@@ -1,11 +1,13 @@
 import React, { useMemo, useEffect, useState } from "react";
 import { db } from "../../firebase_setup/firebase";
 import { Link } from "react-router-dom";
+import { getAuth } from "firebase/auth";
 import {
   collection,
   getDocs,
   updateDoc,
   doc,
+  getDoc,
   deleteDoc,query,where,
 } from "firebase/firestore";
 import { EmailForm } from "../Email_Cpomponent/EmailForm";
@@ -26,6 +28,7 @@ const ReportsTableCom = () => {
   const [showEmailForm, setShowEmailForm] = useState(false);
   const [city, setCity] = useState("");
   const [showExport, setShowExport] = useState(false);
+  const [userAccess, setUserAccess] = useState(null);
 
   useEffect(() => {
     data.length > 0 ? setShowExport(true) : setShowExport(false);
@@ -236,7 +239,6 @@ const ReportsTableCom = () => {
   };
 
   const handleExportData = () => {
-    console.log("data: ", data);
 
     const csvExporter = new ExportToCsv(csvOptions);
     csvExporter.generateCsv(
@@ -322,6 +324,29 @@ const ReportsTableCom = () => {
     setShowEmailForm(!showEmailForm);
   };
 
+  useEffect(() => {
+    const fetchUserAccess = async () => {
+      try {
+        const auth = getAuth();
+        const user = auth.currentUser;
+        if (user) {
+          const email = user.email;
+          const adminUserDocRef = doc(db, "AdminUsers", email);
+          const adminUserDocSnapshot = await getDoc(adminUserDocRef);
+          if (adminUserDocSnapshot.exists()) {
+            setUserAccess("Admin");
+          } else {
+            setUserAccess("Regular");
+          }
+        }
+      } catch (error) {
+        console.error("Error fetching user access: ", error);
+      }
+    };
+  
+    fetchUserAccess();
+  }, []);
+
   return (
     <>
       <MaterialReactTable
@@ -385,13 +410,23 @@ const ReportsTableCom = () => {
               </IconButton>
             </Tooltip>
 
-            <Tooltip title="מחיקה">
-              <IconButton
-                color="error"
-                onClick={() => handleDelete(row.original.uuid)}
-              >
-                <DeleteIcon />
-              </IconButton>
+            <Tooltip
+              title={
+                userAccess === "Admin"
+                  ? "מחיקה"
+                  : "אין לך הרשאה לגשת לכאן"
+              }
+              placement="top"
+            >
+              <span>
+                <IconButton
+                  color="error"
+                  disabled={userAccess !== "Admin"}
+                  onClick={() => handleDelete(row.original.id)}
+                >
+                  <DeleteIcon />
+                </IconButton>
+              </span>
             </Tooltip>
           </Box>
         )}

@@ -15,6 +15,8 @@ import 'react-toastify/dist/ReactToastify.css';
 import randomatic from 'randomatic';
 import Moment from 'react-moment';
 import emailjs from "@emailjs/browser";
+import axios from 'axios';
+
 
 
 export default function ReportForm() {
@@ -113,7 +115,7 @@ export default function ReportForm() {
     setSecretCode(randomatic('Aa0', 8));
   };
 
-  const sendEmail = (e) => {
+  const sendEmail = async (e) => {
     e.preventDefault();
 
     emailjs
@@ -131,6 +133,30 @@ export default function ReportForm() {
           console.log(error.text);
         }
       );
+
+      if(email !== "" && isEmailValid){
+        
+        const message = "תודה על פנייתך! הקוד הסודי שלך למעקב אחרי הפנייה הוא: "+secretCode;
+        console.log(message);
+        let recipients = [email];
+          
+    try {
+      await axios.post('http://localhost:3001/ReportsTable', {
+        recipients,
+        subject: "קוד סודי",
+        content: message
+      });
+
+      // Show success alert
+    alert('ההודעה נשלחה בהצלחה');
+    // Clear form fields
+
+    } catch (error) {
+      // Show error alert
+      alert('ההודעה לא נשלחה');
+      console.error('Error sending email:', error);
+    }
+      }
   };
 
   
