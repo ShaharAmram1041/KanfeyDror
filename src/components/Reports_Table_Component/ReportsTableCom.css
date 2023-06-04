@@ -1,0 +1,15 @@
+.MuiDialogContent-root.css-ypiqx9-MuiDialogContent-root {
+    /* Add your custom styles here */
+    direction: rtl !important;
+    /* Override any other styles as needed */
+  }
+  
+  /* Override the left: 0 style */
+  .css-1c2i806-MuiFormLabel-root-MuiInputLabel-root {
+    left: unset !important;
+  }
+  
+  .css-dqp2io-MuiTableCell-root {
+    direction: rtl !important;
+  }
+  
