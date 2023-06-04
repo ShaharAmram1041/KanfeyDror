@@ -1,9 +1,39 @@
-import React, { useState } from "react";
-import { collection, doc, deleteDoc, getDoc } from "firebase/firestore";
+import React, { useState, useEffect } from "react";
+import {
+  collection,
+  getDocs,
+  doc,
+  deleteDoc,
+  getDoc,
+} from "firebase/firestore";
 import { db } from "../../firebase_setup/firebase";
 
 const RemoveAdministrator = () => {
+  const [emails, setEmails] = useState([]);
   const [deleteEmail, setDeleteEmail] = useState("");
+
+  useEffect(() => {
+    const getEmails = async () => {
+      try {
+        const regularUsersSnapshot = await getDocs(
+          collection(db, "RegularUsers")
+        );
+        const adminUsersSnapshot = await getDocs(collection(db, "AdminUsers"));
+
+        const regularUserEmails = regularUsersSnapshot.docs.map(
+          (doc) => doc.id
+        );
+        const adminUserEmails = adminUsersSnapshot.docs.map((doc) => doc.id);
+
+        const allEmails = [...regularUserEmails, ...adminUserEmails];
+        setEmails(allEmails);
+      } catch (error) {
+        console.error("Error retrieving emails:", error);
+      }
+    };
+
+    getEmails();
+  }, []);
 
   const handleDeleteEmailChange = (e) => {
     setDeleteEmail(e.target.value.toLowerCase());
@@ -11,8 +41,14 @@ const RemoveAdministrator = () => {
 
   const handleRemoveAdmin = async () => {
     if (!deleteEmail) {
-      console.log("Please enter an email to remove from admin.");
-      alert("אנא הזמן כתובת אימייל")
+      alert("אנא בחר כתובת אימייל מהרשימה!");
+      return;
+    }
+
+    // Show confirmation alert
+    const confirmDelete = window.confirm("האם אתה בטוח שברצונך למחוק מנהל זה?");
+
+    if (!confirmDelete) {
       return;
     }
 
@@ -33,10 +69,15 @@ const RemoveAdministrator = () => {
       }
 
       if (!selectedCollection) {
-        console.log("User not found in any collection.");
-        alert("לא קיים מנהל עם כתובת המייל שהזנת, נסה שנית.")
+        console.log("מנהל זה לא קיים במערכת!");
         return;
       }
+
+      // Remove user from the selected collection
+      userDocRef = doc(db, selectedCollection, deleteEmail);
+      await deleteDoc(userDocRef);
+
+      alert("הכתובת נמחקה בהצלחה!", deleteEmail);
 
       // Remove user from authentication
       const response = await fetch(
@@ -51,38 +92,38 @@ const RemoveAdministrator = () => {
       );
 
       if (response.ok) {
-        //console.log("Admin removed from authentic....!");
+        console.log("User removed from authentication:", deleteEmail);
+
+        // Remove email from the dropdown box
+        setEmails((prevEmails) =>
+          prevEmails.filter((email) => email !== deleteEmail)
+        );
       } else {
-        console.error("Failed to remove admin user from authentication");
+        console.error("מחיקת המנהל נכשלה, נסה שנית!");
       }
 
-      // Remove user from the selected collection
-      userDocRef = doc(db, selectedCollection, deleteEmail);
-      await deleteDoc(userDocRef);
-
-      //console.log("Admin removed from authenti... and collection!");
-      alert("הפעולה בוצעה בהצלחה, המנהל הוסר!")
       setDeleteEmail("");
     } catch (error) {
-      //console.error("Error removing admin:", error);
-      alert("Error removing admin:", error);
+      console.error("שגיאה:", error);
     }
   };
 
   return (
     <div>
-      <h2>כאן המנהל יכול למחוק כל משתמש שקיים במערכת </h2>
+      <h2>כאן המנהל יכול למחוק כל משתמש שקיים במערכת</h2>
+
       <div>
         <label>המייל של המשתמש אותו תרצה למחוק</label>
-        <input
-          type="email"
-          placeholder="Email Address"
-          value={deleteEmail}
-          onChange={handleDeleteEmailChange}
-          required
-        />
+        <select value={deleteEmail} onChange={handleDeleteEmailChange}>
+          <option value="">בחר אימייל</option>
+          {emails.map((email) => (
+            <option key={email} value={email}>
+              {email}
+            </option>
+          ))}
+        </select>
+        <button onClick={handleRemoveAdmin}>מחק מנהל</button>
       </div>
-      <button onClick={handleRemoveAdmin}>מחק משתמש</button>
     </div>
   );
 };

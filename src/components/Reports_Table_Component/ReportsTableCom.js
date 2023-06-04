@@ -8,7 +8,9 @@ import {
   updateDoc,
   doc,
   getDoc,
-  deleteDoc,query,where,
+  deleteDoc,
+  query,
+  where,
 } from "firebase/firestore";
 import { EmailForm } from "../Email_Cpomponent/EmailForm";
 import MaterialReactTable from "material-react-table";
@@ -239,7 +241,6 @@ const ReportsTableCom = () => {
   };
 
   const handleExportData = () => {
-
     const csvExporter = new ExportToCsv(csvOptions);
     csvExporter.generateCsv(
       data.map((item) => [
@@ -273,22 +274,26 @@ const ReportsTableCom = () => {
   }, []);
 
   const handleDelete = async (id) => {
-    const confirmed = window.confirm("Are you sure you want to delete this report?");
+    const confirmed = window.confirm(
+      "Are you sure you want to delete this report?"
+    );
     if (confirmed) {
       try {
         const reportCollectionRef = collection(db, "Reports");
-        const querySnapshot = await getDocs(query(reportCollectionRef, where("uuid", "==", id)));
-        
+        const querySnapshot = await getDocs(
+          query(reportCollectionRef, where("uuid", "==", id))
+        );
+
         if (!querySnapshot.empty) {
           let documentId = null;
           querySnapshot.forEach((docSnapshot) => {
             documentId = docSnapshot.id;
           });
-          
+
           if (documentId !== null) {
             const reportDocRef = doc(db, "Reports", documentId);
             await deleteDoc(reportDocRef);
-            
+
             setData((prevData) => prevData.filter((item) => item.uuid !== id));
           }
         }
@@ -304,15 +309,15 @@ const ReportsTableCom = () => {
       const querySnapshot = await getDocs(query(reportCollectionRef));
 
       if (querySnapshot.size > 0) {
-          const docSnapshot = querySnapshot.docs[row.index];
-          const reportDocRef = doc(db, "Reports", docSnapshot.id);
-          await updateDoc(reportDocRef, values);
-          setData((prevData) => {
-            const updatedData = [...prevData];
-            updatedData[row.index] = values;
-            return updatedData;
-          });
-      } 
+        const docSnapshot = querySnapshot.docs[row.index];
+        const reportDocRef = doc(db, "Reports", docSnapshot.id);
+        await updateDoc(reportDocRef, values);
+        setData((prevData) => {
+          const updatedData = [...prevData];
+          updatedData[row.index] = values;
+          return updatedData;
+        });
+      }
     } catch (error) {
       console.error("Error saving report: ", error);
     }
@@ -343,7 +348,7 @@ const ReportsTableCom = () => {
         console.error("Error fetching user access: ", error);
       }
     };
-  
+
     fetchUserAccess();
   }, []);
 
@@ -390,7 +395,7 @@ const ReportsTableCom = () => {
             schoolName: false,
             Class: false,
             youthName: false,
-            otherPlace: false
+            otherPlace: false,
           },
         }}
         renderRowActions={({ row, table }) => (
@@ -412,9 +417,7 @@ const ReportsTableCom = () => {
 
             <Tooltip
               title={
-                userAccess === "Admin"
-                  ? "מחיקה"
-                  : "אין לך הרשאה לגשת לכאן"
+                userAccess === "Admin" ? "מחיקה" : "אין לך הרשאה לגשת לכאן"
               }
               placement="top"
             >
@@ -422,7 +425,7 @@ const ReportsTableCom = () => {
                 <IconButton
                   color="error"
                   disabled={userAccess !== "Admin"}
-                  onClick={() => handleDelete(row.original.id)}
+                  onClick={() => handleDelete(row.original.uuid)}
                 >
                   <DeleteIcon />
                 </IconButton>

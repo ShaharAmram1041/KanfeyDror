@@ -13,7 +13,7 @@ export default function Header() {
   const [menuOpen, setMenuOpen] = useState(true);
   const [isAdmin, setIsAdmin] = useState(false);
   const [isRegularUser, setIsRegularUser] = useState(false);
-  const navigate =useNavigate();
+  const navigate = useNavigate();
 
   const checkUserRoles = async () => {
     try {
@@ -71,10 +71,10 @@ export default function Header() {
     setMenuOpen((p) => !p);
   };
 
-  const handleLogout= ()=>{
+  const handleLogout = () => {
     setMenuOpen((p) => !p);
-    navigate('/')
-  }
+    navigate("/");
+  };
 
   useEffect(() => {
     const handleResize = () => {
@@ -104,8 +104,6 @@ export default function Header() {
     });
   }, []);
 
-  
-
   return (
     <header className={classes.header}>
       <div className={classes.header__content}>
@@ -132,25 +130,22 @@ export default function Header() {
             </li>
 
             {auth.currentUser && (
-            
-            <li>
-              <NavLink to="/ReportsTable" onClick={menuToggleHandler}>
-                ניהול דיווחים
-              </NavLink>
-            </li>
+              <li>
+                <NavLink to="/ReportsTable" onClick={menuToggleHandler}>
+                  ניהול דיווחים
+                </NavLink>
+              </li>
             )}
 
-
             {isAdmin && auth.currentUser && (
-  <>
-    <li>
-      <NavLink to="/AddAdministrator"  onClick={menuToggleHandler}>הוספת משתמש</NavLink>
-    </li>
-    <li>
-      <NavLink to="/RemoveAdministrator"  onClick={menuToggleHandler}>הסרת משתמש</NavLink>
-    </li>
-  </>
-)}
+              <>
+                <li>
+                  <NavLink to="/admin" onClick={menuToggleHandler}>
+                    הוספת/הסרת מנהל
+                  </NavLink>
+                </li>
+              </>
+            )}
 
             <li>
               {auth.currentUser ? (
