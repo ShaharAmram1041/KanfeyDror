@@ -1,0 +1,98 @@
+.page-container1 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: hsl(217, 79%, 89%);
+}
+
+.form-container1 {
+  background-color: #e6f0ff;
+  border-radius: 8px;
+  padding: 50px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+.form-container1 form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.form-container1 form .MuiTextField-root {
+  margin-bottom: 20px;
+  background-color: #ffffff;
+  font-size: 50px;
+}
+
+.form-container1 form label.Mui-focused {
+  color: black;
+  font-weight: 30px bold;
+}
+
+.form-container1 form .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline {
+  border-color: black;
+  font-weight: 200px;
+}
+
+.form-container1 form button {
+  background-color: #2196f3;
+  color: #ffffff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: bold;
+  align-items: center;
+}
+
+.page-container2 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #3f3f3f;
+}
+
+.form-container2 {
+  background-color: #5b5757;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  width: 35%;
+}
+
+.form-container2 form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.form-container2 form .MuiTextField-root {
+  margin-bottom: 20px;
+  background-color: #ffffff;
+  font-size: 50px;
+}
+
+.form-container2 form label.Mui-focused {
+  color: black;
+  font-weight: 30px bold;
+}
+
+.form-container2 form .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline {
+  border-color: black;
+  font-weight: 200px;
+}
+
+.form-container2 form button {
+  background-color: #fd6060;
+  color: #ffffff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: bold;
+  align-items: center;
+}
