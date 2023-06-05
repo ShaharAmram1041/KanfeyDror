@@ -13,7 +13,7 @@ import AddAdministrator from "./pages/AddAdministratorPage/AddAdministrator";
 import RemoveAdministrator from "./pages/RemoveAdministratorPage/RemoveAdministrator";
 import AdminPanel from "./pages/Admin_Panel_Page/AdminPanel";
 import ManageData from "./pages/ManageData/ManageData";
-
+import Footer from "./components/Footer_Component/Footer";
 
 function App() {
   return (
@@ -82,6 +82,7 @@ function App() {
             <Route path="*" element={<h1>PAGE NOT FOUND</h1>} />
           </Routes>
         </AuthContextProvider>
+        <Footer />
       </Layout>
     </div>
   );

@@ -1,22 +1,18 @@
-import { uid } from "uid";
-import styles from "./ReportFormStyle.module..css";
 import { db } from "../../firebase_setup/firebase";
 import { addDoc, collection, getDocs, query, where } from "firebase/firestore";
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useRef } from "react";
 import cities from "./cities.json";
-// import * as React from 'react';
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import { Paper, MenuItem, Select, InputLabel } from "@mui/material";
+import { Paper, MenuItem } from "@mui/material";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import randomatic from "randomatic";
-import Moment from "react-moment";
 import emailjs from "@emailjs/browser";
 import axios from "axios";
-import "./ReportForm.scss";
+
+import classes from "./ReportForm.module.scss";
 
 export default function ReportForm() {
   const [name, setName] = useState("");
@@ -27,12 +23,13 @@ export default function ReportForm() {
   const [city, setCity] = useState("");
   const [Class, setClass] = useState("");
   const [isEmailValid, setIsEmailValid] = useState(true);
-  const [isAno, setIsAno] = useState(null);
+  const [isAno, setIsAno] = useState(false);
+  const [isNotAno, setIsNotAno] = useState(false);
+
   const [secretCode, setSecretCode] = useState(randomatic("Aa0", 8));
   const [schoolName, setSchoolName] = useState("");
   const [youthName, setYouthName] = useState("");
   const [otherPlace, setOtherPlace] = useState("");
-  const [isFormVisible, setFormVisible] = useState(true);
   const treatment = "";
   const form = useRef();
 
@@ -162,28 +159,53 @@ export default function ReportForm() {
     }
   };
 
+  const handleOpenAnoForm = () => {
+    setIsAno((isAno) => !isAno);
+    setIsNotAno(false);
+  };
+
+  const handleOpenNotAnoForm = () => {
+    setIsNotAno((isNotAno) => !isNotAno);
+    setIsAno(false);
+  };
+
   return (
-    <div>
-      <Paper
-        elevation={3}
-        style={{ padding: "20px", maxWidth: "800px", margin: "0 auto" }}
-        dir="rtl"
-      >
-        <React.Fragment>
-          <Typography variant="h3" gutterBottom>
-            אני רוצה לדווח על חרם!
-          </Typography>
-          <button className="anonymus" onClick={() => setIsAno(true)}>
-            אנונימי
-          </button>
-          <button className="notAno" onClick={() => setIsAno(false)}>
-            לא אנונימי
-          </button>
-        </React.Fragment>
-      </Paper>
+    <div className="report-form">
+      <div className={`${classes.center_question} ${classes.report_form}`}>
+        <Paper
+          elevation={3}
+          style={{
+            padding: "20px",
+            maxWidth: "800px",
+            margin: "0 auto",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+          dir="rtl"
+        >
+          <React.Fragment>
+            <Typography variant="h3" gutterBottom>
+              אני רוצה לדווח על חרם!
+            </Typography>
+
+            <div style={{ display: "flex", gap: "10px" }}>
+              <button
+                className={classes.anonymous_button}
+                onClick={handleOpenAnoForm}
+              ></button>
+              <button
+                className={classes.notAnonymous_button}
+                onClick={handleOpenNotAnoForm}
+              ></button>
+            </div>
+          </React.Fragment>
+        </Paper>
+      </div>
 
       {/* is anonymous */}
-      {isFormVisible && isAno === true && isAno !== null && (
+      {isAno && isAno === true && isAno !== null && (
         <div className="full-page-form">
           <Paper
             elevation={3}
@@ -196,7 +218,7 @@ export default function ReportForm() {
                 sendEmail(event);
                 handleSendReport(event);
                 setTimeout(() => {
-                  setFormVisible(false); // Close the form after 2 seconds
+                  setIsAno(false); // Close the form after 2 seconds
                 }, 2000);
               }}
             >
@@ -385,7 +407,7 @@ export default function ReportForm() {
                     variant="standard"
                     onChange={(e) => setDate(e.target.value)}
                     inputProps={{
-                      style: { paddingRight: "230px" },
+                      className: { paddingRight: "230px" },
                     }}
                   />
                 </Grid>
@@ -415,7 +437,7 @@ export default function ReportForm() {
       )}
 
       {/* is not anonymous */}
-      {isFormVisible && !isAno && isAno !== null && (
+      {isNotAno && !isAno && isAno !== null && (
         <div className="full-page-form">
           <Paper
             elevation={3}
@@ -428,7 +450,7 @@ export default function ReportForm() {
                 sendEmail(event);
                 handleSendReport(event);
                 setTimeout(() => {
-                  setFormVisible(false); // Close the form after 2 seconds
+                  setIsNotAno(false); // Close the form after 2 seconds
                 }, 2000);
               }}
             >
@@ -641,7 +663,7 @@ export default function ReportForm() {
                     variant="standard"
                     onChange={(e) => setDate(e.target.value)}
                     inputProps={{
-                      style: { paddingRight: "230px" },
+                      className: { paddingRight: "230px" },
                     }}
                   />
                 </Grid>
@@ -677,8 +699,6 @@ export default function ReportForm() {
         closeButton={true}
         hideProgressBar={true}
       />
-
-      <div>אנשי קשר רלוונטיים: - כנפי דרור: - מוקד 105:</div>
     </div>
   );
 }

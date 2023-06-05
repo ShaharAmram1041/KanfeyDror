@@ -3,18 +3,19 @@ $assetsPath: "../photos/background2.png";
 
 * {
   box-sizing: border-box;
-
   // margin: 0;
 }
 
 body {
   font-family: $Poppins;
   background-image: url(#{$assetsPath});
+  background-color: $bgAll;
   background-position: center;
   background-size: cover;
   background-repeat: no-repeat;
   width: 100%;
   height: 100vh;
+  // overflow: hidden;
 }
 
 #root {
