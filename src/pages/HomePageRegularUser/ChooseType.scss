@@ -1,0 +1,63 @@
+.square-component {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; /* Align items with space in between */
+  align-items: center;
+  height: 60vh; /* Adjust the height as needed */
+  width: 60vw; /* Adjust the width as needed */
+  background-color: #f6f6f6;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.4); /* Adjust the shadow as needed */
+  border-radius: 4%; /* Makes the square component circular */
+  margin: 0 auto;
+  padding: 20px; /* Add padding to increase space around content */
+}
+
+.top-text {
+  font-size: 50px; /* Adjust the font size as needed */
+  margin-top: 20px; /* Add margin at the top to move the text higher */
+  color: #1b4db7;
+}
+
+.button-text {
+  font-size: 18px; /* Adjust the font size as needed */
+  white-space: nowrap; /* Prevents text from wrapping to multiple lines */
+  margin-bottom: 10px; /* Add margin below the button text */
+}
+
+.photo-buttons {
+  display: flex;
+  justify-content: center; /* Align the photo buttons horizontally in the center */
+  margin-bottom: 20px; /* Add margin at the bottom to move the buttons down */
+}
+
+.photo-button {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  flex: 1; /* Distributes available space evenly between the photo buttons */
+  transition: background-color 0.3s;
+  cursor: pointer;
+  margin-bottom: 10px; /* Add spacing between the photo buttons */
+  margin-right: 10px; /* Add spacing between the photo buttons */
+}
+
+.photo-button:last-child {
+  margin-right: 0; /* Remove margin-right for the last photo button */
+}
+
+.photo-button.active {
+  background-color: #dfdfdf;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.4); /* Adjust the shadow as needed */
+  border-radius: 5%;
+}
+
+.bottom-photo {
+  margin-right: auto;
+}
+
+.bottom-photo img{
+  max-height: 80%;
+  max-width: 80%;
+}
+

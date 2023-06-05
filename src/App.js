@@ -12,6 +12,10 @@ import ProtectedAdminRoute from "./components/ProtectedAdminRoute";
 import AddAdministrator from "./pages/AddAdministratorPage/AddAdministrator";
 import RemoveAdministrator from "./pages/RemoveAdministratorPage/RemoveAdministrator";
 import AdminPanel from "./pages/Admin_Panel_Page/AdminPanel";
+import ManageData from "./pages/ManageData/ManageData";
+import Footer from "./components/Footer_Component/Footer";
+import ReportFormPage from "./pages/ReportFormPage/ReportFormPage";
+import ReportForm from "./components/Contact_Form_Component/ReportForm";
 
 function App() {
   return (
@@ -37,6 +41,8 @@ function App() {
                 </ProtectedRoute>
               }
             />
+                  <Route path="/" element={<ReportFormPage/>} />
+          <Route path="/report-form/:type" element={<ReportForm/>} />
             <Route
               path="/DataGraphs"
               element={
@@ -62,6 +68,15 @@ function App() {
                   <AdminPanel />
                 </ProtectedAdminRoute>
               }
+            />
+
+            <Route
+              path="/manageData"
+              element={
+                <ProtectedAdminRoute>
+                  <ManageData />
+                </ProtectedAdminRoute>
+              }
             ></Route>
 
             {/* <Route path="/AddAdministrator" element={<ProtectedAdminRoute><AddAdministrator /></ProtectedAdminRoute>} />
@@ -72,8 +87,10 @@ function App() {
           </Routes>
         </AuthContextProvider>
       </Layout>
+      <Footer></Footer>
     </div>
   );
 }
 
 export default App;
+     

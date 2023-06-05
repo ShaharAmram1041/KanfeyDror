@@ -1,0 +1,35 @@
+.social-media {
+  display: flex;
+  align-items: center;
+  margin-top: 0; /* Adjust this value to move the images down */
+  text-align: right;
+}
+
+.social-media img {
+  width: 40px;
+  margin-right: 10px;
+}
+
+.contact-info {
+  text-align: right;
+}
+
+body {
+  margin: 0;
+  padding-bottom: 20px; /* Adjust this value according to the height of the footer */
+}
+
+.footer {
+  display: flex;
+  justify-content: space-between;
+}
+
+footer {
+  background-color: #424444;
+  color: white;
+  bottom: 0;
+  position: fixed;
+  width: 100%;
+
+}
+

@@ -8,7 +8,11 @@
 /* button.download-table-xls-button{
   background-color: rgb(15, 117, 2);
 } */
-
+.app {
+  display: flex;
+  flex-flow: column nowrap;
+  min-height: 100vh; /* or the minimum height of your content */
+}
 
 
 /* <button class="button-3" role="button">Button 3</button> */
