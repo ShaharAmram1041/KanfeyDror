@@ -76,6 +76,14 @@ export default function Header() {
     navigate("/");
   };
 
+  
+  const manageData = () => {
+    setMenuOpen((p) => !p);
+    navigate("/manageData");
+  };
+
+
+
   useEffect(() => {
     const handleResize = () => {
       setSize({
@@ -142,6 +150,16 @@ export default function Header() {
                 <li>
                   <NavLink to="/admin" onClick={menuToggleHandler}>
                     הוספת/הסרת מנהל
+                  </NavLink>
+                </li>
+              </>
+            )}
+
+            {isAdmin && auth.currentUser && (
+              <>
+                <li>
+                  <NavLink to="/manageData" onClick={manageData}>
+                    ניהול מאגר מידע
                   </NavLink>
                 </li>
               </>

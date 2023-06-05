@@ -1,7 +1,7 @@
 import axios from 'axios';
 import React, { useState, useEffect } from 'react';
 import { db } from "../../firebase_setup/firebase";
-import { addDoc,deleteDoc, collection, query, where, getDocs } from "firebase/firestore";
+import {  collection, query, where, getDocs } from "firebase/firestore";
 import { Grid ,TextField,MenuItem} from '@mui/material';
 
 
@@ -9,41 +9,38 @@ export const EmailForm = ({ c }) => {
   const [recipients, setRecipients] = useState([]);
   const [subject, setSubject] = useState('');
   const [content, setContent] = useState('');
-  const [city, setCity] = useState(c);
-  const [email, setEmail] = useState('');
+  const [city] = useState(c);
+  const [email] = useState('');
   const [existingEmails, setExistingEmails] = useState([]);
   const [isEmailValid, setIsEmailValid] = useState(true);
-  const [isNewEmailValid, setIsNewEmailValid] = useState(true);
-  const [newEmail, setNewEmail] = useState('');
-  const [isDeleteEmailValid, setIsDeleteEmailValid] = useState(true);
-  const [deleteEmail, setdeleteEmail] = useState('');
   const [showForm, setShowForm] = useState(true);
 
   useEffect(() => {
     const fetchEmails = async () => {
       try {
-        const q = query(collection(db, "emailDB"), where("city", "==", city));
+        const q = query(collection(db, "DB"), where("city", "==", city));
         const querySnapshot = await getDocs(q);
-        const emails = querySnapshot.docs.map((doc) => doc.data().email);
-        setExistingEmails(emails);
+        const emails = querySnapshot.docs.map((doc) => doc.data().mails);
+  
+        // Split the string into an array if it contains commas
+        const updatedEmails = emails.map((str) => str.includes(",") ? str.split(",") : str).flat();
+  
+        setExistingEmails(updatedEmails);
       } catch (error) {
         console.error("Error fetching emails: ", error);
       }
     };
-
-    if (city) {
-      fetchEmails();
-    }
+  
+    fetchEmails();
   }, [city]);
+  
+  // useEffect(() => {
+  //   console.log(existingEmails);
+  // }, [existingEmails]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("hrlo!");
     if(!isEmailValid || city === ""){
-      console.log("hrlo!ssss");
-      console.log("im email"+email);
-      console.log("hrlcity" + city);
-      console.log("hrlo!ssss" + !isEmailValid);
       return;}
       
     try {
@@ -89,110 +86,9 @@ export const EmailForm = ({ c }) => {
     }
   
     setIsEmailValid(isValid);
-    // setEmail(e.target.value);
-    // const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
-    // setIsEmailValid(emailRegex.test(e.target.value));
   };
 
-  // const writeEmailsToDB = async (e) => {
-  //   e.preventDefault();
-  //   if(city === "" || email === "")
-  //     return;
-  //   try {
-  //     const docRef = await addDoc(collection(db, "emailDB"), {
-  //       city,
-  //       email,
-  //     });
-  //   } catch (e) {
-  //     console.error("Error adding document: ", e);
-  //   }
-  //   setEmail('');
-  //   setCity('');
-  // };
-
-  const writeNewEmailsToDB = async (e) => {
-    if (!isNewEmailValid || newEmail === '') {
-      return;
-    }
-  
-    try {
-      // Check if the email with the same email and city already exists
-      const querySnapshot = await getDocs(
-        query(
-          collection(db, 'emailDB'),
-          where('email', '==', newEmail),
-          where('city', '==', city)
-        )
-      );
-  
-      if (querySnapshot.empty) {
-        // No matching document found, proceed with adding the new email
-        const docRef = await addDoc(collection(db, 'emailDB'), {
-          city,
-          email: newEmail,
-        });
-        alert('המייל נוסף בהצלחה');
-        setNewEmail('');
-      } else {
-        // Email with the same email and city already exists
-        alert('כתובת המייל כבר קיימת עבור העיר הנבחרת');
-      }
-    } catch (e) {
-      console.error('Error adding document: ', e);
-    }
-  };
-
-
-  const handleNewEmailChange = (event) => {
-    setNewEmail(event.target.value);
-    // Validate email format using a regular expression
-    const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
-    setIsNewEmailValid(emailRegex.test(newEmail));
-  };
-
-
-  const deleteEmailsDB = async (e) => {
-    if (!isDeleteEmailValid || deleteEmail === "") {
-      return;
-    }
-  
-    try {
-      const querySnapshot = await getDocs(
-        query(
-          collection(db, 'emailDB'),
-          where('email', '==', deleteEmail),
-          where('city', '==', city)
-        )
-      );
-  
-      if (!querySnapshot.empty) {
-        // Delete the matching document
-        querySnapshot.forEach(async (doc) => {
-          await deleteDoc(doc.ref);
-        });
-        alert('המייל נמחק בהצלחה');
-        setdeleteEmail('');
-      } else {
-        // No matching document found
-        alert('לא נמצא מייל תואם למחיקה');
-      }
-    } catch (e) {
-      console.error('Error deleting document: ', e);
-    }
-  };
-
-  const handleDeleteEmailChange = (event) => {
-    setdeleteEmail(event.target.value);
-    // Validate email format using a regular expression
-    const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
-    setIsDeleteEmailValid(emailRegex.test(deleteEmail));
-  };
-
-  
-
-  
-
-
+ 
   return (
     <div>
       {showForm && (
@@ -328,7 +224,7 @@ export const EmailForm = ({ c }) => {
    </div>
    )}
 
-    {showForm && ( 
+    {/* {showForm && ( 
       <div>
       <TextField
         label="הוסף כתובת מייל למאגר"
@@ -382,7 +278,7 @@ export const EmailForm = ({ c }) => {
        הסר מייל
       </button>
     </div>
-)}
+)} */}
     
 
 
