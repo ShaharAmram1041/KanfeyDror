@@ -12,6 +12,8 @@ import ProtectedAdminRoute from "./components/ProtectedAdminRoute";
 import AddAdministrator from "./pages/AddAdministratorPage/AddAdministrator";
 import RemoveAdministrator from "./pages/RemoveAdministratorPage/RemoveAdministrator";
 import AdminPanel from "./pages/Admin_Panel_Page/AdminPanel";
+import ManageData from "./pages/ManageData/ManageData";
+
 
 function App() {
   return (
@@ -60,6 +62,15 @@ function App() {
               element={
                 <ProtectedAdminRoute>
                   <AdminPanel />
+                </ProtectedAdminRoute>
+              }
+            />
+
+            <Route
+              path="/manageData"
+              element={
+                <ProtectedAdminRoute>
+                  <ManageData />
                 </ProtectedAdminRoute>
               }
             ></Route>
