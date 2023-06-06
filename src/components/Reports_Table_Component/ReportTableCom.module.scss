@@ -1,0 +1,54 @@
+@import "../../styles/variables.scss";
+
+.MuiDialogContent-root.css-ypiqx9-MuiDialogContent-root {
+  /* Add your custom styles here */
+  direction: rtl !important;
+  /* Override any other styles as needed */
+}
+
+/* Override the left: 0 style */
+.css-1c2i806-MuiFormLabel-root-MuiInputLabel-root {
+  left: unset !important;
+}
+
+.css-dqp2io-MuiTableCell-root {
+  direction: rtl !important;
+}
+
+.container {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.graphs {
+  /* Styles for the button */
+  background-color: $dark; /* Example background color */
+  color: #fff;
+  font-size: 17px;
+  border-radius: 12px;
+  margin-top: 1%;
+  margin-left: 83%;
+  cursor: pointer;
+  /* Add any other desired styles */
+}
+
+.graphs:hover {
+  /* Styles when the button is hovered */
+  background-color: $primary; /* Example background color */
+}
+
+.graphs:focus {
+  /* Styles when the button is focused */
+  outline: none;
+  box-shadow: 0 0 5px #ff4d4d; /* Example box shadow */
+}
+
+.graphs:active {
+  /* Styles when the button is pressed */
+  transform: translateY(1px);
+}
+
+.graphs:visited {
+  /* Styles for the button when it has been visited */
+  color: #fff; /* Example text color */
+}

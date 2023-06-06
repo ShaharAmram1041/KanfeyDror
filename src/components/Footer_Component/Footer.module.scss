@@ -1,0 +1,81 @@
+@import "../../styles/variables.scss";
+
+.page_container {
+  display: flex;
+  flex-direction: column;
+  min-height: 70vh;
+  padding: 10px;
+}
+
+.content {
+  flex: 1;
+}
+
+.footer {
+  flex-shrink: 0;
+  padding: 20px;
+  .page_container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    background-color: $dark;
+  }
+
+  .content {
+    flex: 1;
+  }
+
+  .footer {
+    flex-shrink: 0;
+    padding: 20px;
+    display: flex;
+    background-color: $dark;
+  }
+
+  //   .footer_content {
+  //     margin-bottom: 20px;
+  //   }
+
+  .footer_content {
+    /* Styles for the first div */
+    flex: 1; /* Expand to fill available space */
+  }
+
+  .footer_social {
+    /* Styles for the second div */
+    flex: 0; /* Keep the width of the content */
+  }
+
+  .footer_content p {
+    font-size: 14px;
+    // margin-bottom: 10px;
+  }
+
+  .footer_social h3 {
+    font-size: 18px;
+    // margin-bottom: 10px;
+  }
+
+  .footer_social ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .footer_social ul li {
+    display: inline-block;
+    margin-right: 10px;
+  }
+
+  .footer_social ul li:last-child {
+    margin-right: 0;
+  }
+
+  .footer_social ul li a {
+    text-decoration: none;
+    color: #333;
+    font-size: 14px;
+  }
+
+  background-color: rgb(0, 211, 255, 0.1);
+}

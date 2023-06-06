@@ -1,0 +1,29 @@
+@import url("https://fonts.googleapis.com/css2?family=Alef:wght@700&family=Rubik+Spray+Paint&family=Varela+Round&display=swap");
+
+$Poppins: "Alef", sans-serif, "Rubik Spray Paint", cursive, "Varela Round",
+  sans-serif;
+
+//Colors
+$dark: #ff455a;
+$light: #fff;
+$primary: #00d3ff;
+$bg: rgb(244, 244, 255);
+$bgAll: #fcfaf2;
+//Spacing
+$spacing-md: 16px;
+$spacing-lg: 32px;
+
+//Border radius
+$borderRadius: 12px;
+
+//Header height
+$headerHeight: 100px;
+
+@mixin breakpoint($point) {
+  @if $point == md {
+    // 768px
+    @media (min-width: 48em) {
+      @content;
+    }
+  }
+}
