@@ -4,9 +4,12 @@ import { db } from "../../firebase_setup/firebase";
 import classes from "./AddAdministrator.module.scss";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Swal from "sweetalert2";
+
 
 export default function AddAdministrator() {
   const [email, setEmail] = useState("");
+  const [isValidEmail, setIsValidEmail] = useState(true);
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [userType, setUserType] = useState("");
@@ -19,6 +22,8 @@ export default function AddAdministrator() {
 
   const handleEmailChange = (e) => {
     setEmail(e.target.value.toLowerCase());
+    const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
+    setIsValidEmail(emailRegex.test(e.target.value));
   };
 
   const handlePasswordChange = (e) => {
@@ -36,16 +41,28 @@ export default function AddAdministrator() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    if(!isValidEmail){
+      Swal.fire({
+        html: '<div dir="rtl">' + '<h3 dir="rtl">המייל שהוזן אינו חוקי!</h3>' + "</div>",
+        icon: "error",
+      });
+      return;
+    }
+
     if (password !== confirmPassword) {
-      toast.error("הסיסמאות אינן תואמות", {
-        position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "dark",
+      // toast.error("הסיסמאות אינן תואמות", {
+      //   position: "top-right",
+      //   autoClose: 5000,
+      //   hideProgressBar: false,
+      //   closeOnClick: true,
+      //   pauseOnHover: true,
+      //   draggable: true,
+      //   progress: undefined,
+      //   theme: "dark",
+      // });
+      Swal.fire({
+        html: '<div dir="rtl">' + '<h3 dir="rtl">הסיסמאות אינן תואמות!</h3>' + "</div>",
+        icon: "error",
       });
       return;
     }
@@ -72,27 +89,36 @@ export default function AddAdministrator() {
       });
 
       if (response.ok) {
-        console.log("Admin user created successfully!");
-        toast.success("!המידע עודכן בהצלחה", {
-          position: "top-center",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "colored",
+        // toast.success("!המידע עודכן בהצלחה", {
+        //   position: "top-center",
+        //   autoClose: 5000,
+        //   hideProgressBar: false,
+        //   closeOnClick: true,
+        //   pauseOnHover: true,
+        //   draggable: true,
+        //   progress: undefined,
+        //   theme: "colored",
+        // });
+        Swal.fire({
+          html: '<div dir="rtl">' + '<h3 dir="rtl">מנהל חדש נוסף בהצלחה!</h3>' + "</div>",
+          icon: "success",
         });
+
+
       } else {
-        toast.error("המשתמש כבר קיים במערכת", {
-          position: "top-right",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
+        // toast.error("המשתמש כבר קיים במערכת", {
+        //   position: "top-right",
+        //   autoClose: 5000,
+        //   hideProgressBar: false,
+        //   closeOnClick: true,
+        //   pauseOnHover: true,
+        //   draggable: true,
+        //   progress: undefined,
+        //   theme: "light",
+        // });
+        Swal.fire({
+          html: '<div dir="rtl">' + '<h3 dir="rtl">המשתמש קיים במערכת!</h3>' + "</div>",
+          icon: "warning",
         });
       }
 
@@ -100,7 +126,8 @@ export default function AddAdministrator() {
       setPassword("");
       setConfirmPassword("");
       setUserType("");
-    } catch (error) {
+    } 
+    catch (error) {
       toast.error("לא ניתן להוסיף משתמש זה", {
         position: "top-right",
         autoClose: 5000,
@@ -133,6 +160,11 @@ export default function AddAdministrator() {
             onChange={handleEmailChange}
             required
           />
+          {!isValidEmail && email.length > 0 &&(
+            <span className={classes.validationMessage}>
+            כתובת לא חוקית
+          </span>
+          )}
         </div>
         <div dir="rtl" className={classes.formGroup}>
           <label dir="rtl" className={classes.label}>
@@ -147,9 +179,11 @@ export default function AddAdministrator() {
             onChange={handlePasswordChange}
             required
           />{" "}
+          {password.length < 6 && (
           <span className={classes.validationMessage}>
             סיסמא חייבת להכיל לפחות 6 תווים
           </span>
+          )}
         </div>
         <div dir="rtl" className={classes.formGroup}>
           <label className={classes.label}>אמת את הסיסמא: </label>
