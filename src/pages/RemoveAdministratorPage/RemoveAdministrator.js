@@ -10,6 +10,7 @@ import { db, auth } from "../../firebase_setup/firebase";
 import classes from "./RemoveAdministratorPage.module.scss";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Swal from "sweetalert2";
 
 const RemoveAdministrator = () => {
   const [emails, setEmails] = useState([]);
@@ -81,82 +82,88 @@ const RemoveAdministrator = () => {
       return;
     }
 
-    const confirmDelete = window.confirm("האם אתה בטוח שברצונך למחוק מנהל זה?");
+    const confirmed = await Swal.fire({
+      html:
+        '<div dir="rtl">' +
+        "<h1>האם אתה בטוח שברצונך למחוק את מנהל זה?</h1>" +
+        "<div>בעת לחיצה על אישור, משתמש זה לא יוכל לגשת למערכת יותר</div>" +
+        "</div>",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "כן",
+      cancelButtonText: "לא",
+    });
 
-    if (!confirmDelete) {
+    if (!confirmed.isConfirmed) {
       return;
-    }
-
-    try {
-      let selectedCollection = "";
-      let userDocRef = doc(db, "AdminUsers", deleteEmail);
-      let userDoc = await getDoc(userDocRef);
-
-      if (userDoc.exists()) {
-        selectedCollection = "AdminUsers";
-      } else {
-        userDocRef = doc(db, "RegularUsers", deleteEmail);
-        userDoc = await getDoc(userDocRef);
+    } else {
+      try {
+        let selectedCollection = "";
+        let userDocRef = doc(db, "AdminUsers", deleteEmail);
+        let userDoc = await getDoc(userDocRef);
 
         if (userDoc.exists()) {
-          selectedCollection = "RegularUsers";
+          selectedCollection = "AdminUsers";
+        } else {
+          userDocRef = doc(db, "RegularUsers", deleteEmail);
+          userDoc = await getDoc(userDocRef);
+
+          if (userDoc.exists()) {
+            selectedCollection = "RegularUsers";
+          }
         }
-      }
 
-      if (!selectedCollection) {
-        console.log("מנהל זה לא קיים במערכת!");
-        return;
-      }
-
-      userDocRef = doc(db, selectedCollection, deleteEmail);
-      await deleteDoc(userDocRef);
-
-      toast.success("המחיקה בוצעה בהצלחה", {
-        position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "dark",
-      });
-      const response = await fetch(
-        "http://localhost:3001/RemoveAdministrator",
-        {
-          // const response = await fetch(
-          //   "https://kanfeidrorneww.netlify.app/RemoveAdministrator",
-          //   {
-          method: "DELETE",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ email: deleteEmail }),
+        if (!selectedCollection) {
+          return;
         }
-      );
 
-      if (response.ok) {
-        console.log("User removed from authentication:", deleteEmail);
+        userDocRef = doc(db, selectedCollection, deleteEmail);
+        await deleteDoc(userDocRef);
 
-        setEmails((prevEmails) =>
-          prevEmails.filter((email) => email.email !== deleteEmail)
-        );
-      } else {
-        toast.error("מחיקת המנהל נכשלה, נסה שנית", {
-          position: "top-right",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "dark",
+        Swal.fire({
+          html:
+            '<div dir="rtl">' +
+            '<h1 dir="rtl">המחיקה בוצעה בהצלחה!</h1>' +
+            "</div>",
+          icon: "success",
         });
-      }
+        const response = await fetch(
+          "http://localhost:3001/RemoveAdministrator",
+          {
+            // const response = await fetch(
+            //   "https://kanfeidrorneww.netlify.app/RemoveAdministrator",
+            //   {
+            method: "DELETE",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ email: deleteEmail }),
+          }
+        );
 
-      setDeleteEmail("");
-    } catch (error) {
-      console.error("שגיאה:", error);
+        if (response.ok) {
+          setEmails((prevEmails) =>
+            prevEmails.filter((email) => email.email !== deleteEmail)
+          );
+        } else {
+          toast.error("מחיקת המנהל נכשלה, נסה שנית", {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "dark",
+          });
+        }
+
+        setDeleteEmail("");
+      } catch (error) {
+        console.error("שגיאה:", error);
+      }
     }
   };
 
