@@ -5,6 +5,8 @@ import { collection, query, where, getDocs } from "firebase/firestore";
 import { Grid, TextField, MenuItem, Modal, Button } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import ForwardToInboxIcon from "@mui/icons-material/ForwardToInbox";
+import Swal from "sweetalert2";
+
 
 export const EmailForm = ({ c, onClose }) => {
   const [recipients, setRecipients] = useState([]);
@@ -39,12 +41,20 @@ export const EmailForm = ({ c, onClose }) => {
       try {
         const q = query(collection(db, "DB"), where("city", "==", city));
         const querySnapshot = await getDocs(q);
-        const emails = querySnapshot.docs.map((doc) => doc.data().mails);
+        const emails = querySnapshot.docs.map((doc) => doc.data().mail);
+        const roles = querySnapshot.docs.map((doc) => doc.data().role);
 
-        // Split the string into an array if it contains commas
         const updatedEmails = emails
-          .map((str) => (str.includes(",") ? str.split(",") : str))
-          .flat();
+  .map((str, index) => {
+    const role = roles[index]; // Get the role at the same index
+    if (str.includes(",")) {
+      const emailArray = str.split(",").map((email) => `${email} (${role})`);
+      return emailArray;
+    } else {
+      return [`${str} (${role})`];
+    }
+  })
+  .flat();
 
         setExistingEmails(updatedEmails);
       } catch (error) {
@@ -69,7 +79,10 @@ export const EmailForm = ({ c, onClose }) => {
       });
 
       // Show success alert
-      alert("ההודעה נשלחה בהצלחה");
+      Swal.fire({
+        html: '<div dir="rtl">' + '<h1 dir="rtl">ההודעה נשלחה</h1>' + "</div>",
+        icon: "success",
+      });
       // Clear form fields
       setRecipients([]);
       setSubject("");
@@ -79,8 +92,10 @@ export const EmailForm = ({ c, onClose }) => {
       setShowForm(false);
     } catch (error) {
       // Show error alert
-      alert("ההודעה לא נשלחה");
-      console.error("Error sending email:", error);
+      Swal.fire({
+        html: '<div dir="rtl">' + '<h1 dir="rtl">קרתה תקלה בשליחת ההודעה!</h1>' + "</div>",
+        icon: "error",
+      });
     }
   };
 
@@ -91,9 +106,7 @@ export const EmailForm = ({ c, onClose }) => {
         ? e.target.value
         : [e.target.value];
     }
-
     setRecipients(selectedValues);
-
     let isValid = true;
     if (selectedValues.length > 0) {
       selectedValues.forEach((email) => {
@@ -107,11 +120,33 @@ export const EmailForm = ({ c, onClose }) => {
     setIsEmailValid(isValid);
   };
 
+
+  const handleRecipientChangeBar = (e) => {
+    let selectedValues = [];
+    if (e.target.value !== "") {
+      selectedValues = Array.isArray(e.target.value)
+        ? e.target.value
+        : [e.target.value];
+    }
+
+    const uniqueEmails = [];
+    selectedValues.forEach((value) => {
+      if (value) {
+        const email = value.split("(")[0].trim();
+        if (!uniqueEmails.includes(email)) {
+          uniqueEmails.push(email);
+        }
+      }
+    });
+    setRecipients(uniqueEmails);
+  };
+
   return (
     <div>
       <Modal open={showForm} onClose={handleCloseForm}>
         <div
           style={{
+            margin:"10px",
             position: "fixed",
             top: "50%",
             left: "50%",
@@ -122,13 +157,13 @@ export const EmailForm = ({ c, onClose }) => {
         >
           <form onSubmit={handleSubmit} style={{ textAlign: "center" }}>
             שלח מייל
-            <Grid container direction="column" spacing={2}>
+            <Grid container direction="column" spacing={2} justifyContent="center" alignItems="center">
               {/* The city exists in the database */}
               {existingEmails.length > 0 && (
                 <Grid item sx={{ width: "400px" }}>
                   <TextField
                     select
-                    label="בחר כתובת אימייל מהמאגר"
+                    label="בחר כתובות אימייל מהמאגר"
                     variant="filled"
                     sx={{
                       width: "400px",
@@ -144,7 +179,7 @@ export const EmailForm = ({ c, onClose }) => {
                       },
                     }}
                     value={recipients}
-                    onChange={handleRecipientChange}
+                    onChange={handleRecipientChangeBar}
                     fullWidth
                     SelectProps={{
                       multiple: true,
@@ -186,6 +221,7 @@ export const EmailForm = ({ c, onClose }) => {
                   }}
                   value={recipients}
                   onChange={handleRecipientChange}
+                  multiline // Set multiline to true
                   error={!isEmailValid}
                   helperText={!isEmailValid ? "כתובת מייל לא תקינה" : ""}
                 />
