@@ -1,5 +1,8 @@
+const mailApi = process.env.SGMAIL_API_KEY;
+const serviceAccountKey = process.env.SERVICE_ACCOUNT_KEY;
+
 const sgMail = require("@sendgrid/mail");
-sgMail.setApiKey("");
+sgMail.setApiKey(mailApi);
 
 const express = require("express");
 const cors = require("cors");
@@ -9,7 +12,7 @@ const admin = require("firebase-admin");
 const app = express();
 const PORT = 3001;
 
-const serviceAccount = require("./ServiceAccountKey.json");
+const serviceAccount = require(serviceAccountKey);
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
