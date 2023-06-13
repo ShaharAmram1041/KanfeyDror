@@ -1,0 +1,39 @@
+@import "../../Styles/variables";
+
+// YourComponent.module.scss
+
+.div_button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  //   height: 100vh;
+  margin-top: 10px;
+}
+
+.myButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #ff455a;
+  color: white;
+  border: 1px solid #ccc;
+  border-radius: 12px;
+  padding: 8px 12px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    background-color: #00d3ff;
+  }
+
+  .icon {
+    font-size: 1.2rem;
+    margin-right: 0.5rem;
+    color: white;
+  }
+
+  .text {
+    font-size: 1rem;
+    color: white;
+  }
+}

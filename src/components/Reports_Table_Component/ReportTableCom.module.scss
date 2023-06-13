@@ -1,0 +1,72 @@
+@import "../../Styles/variables.scss";
+
+.graphs {
+  /* Styles for the default button */
+  background-color: $dark; /* Example background color */
+  color: #fff;
+  font-size: 17px;
+  border-radius: 12px;
+  margin-top: 1%;
+  cursor: pointer;
+  /* Add any other desired styles */
+}
+
+.graphs:hover {
+  /* Styles when the default button is hovered */
+  background-color: $primary; /* Example background color */
+}
+
+.graphs:focus {
+  /* Styles when the default button is focused */
+  outline: none;
+  box-shadow: 0 0 5px #ff4d4d; /* Example box shadow */
+}
+
+.graphs:active {
+  /* Styles when the default button is pressed */
+  transform: translateY(1px);
+}
+
+.graphs:visited {
+  /* Styles for the default button when it has been visited */
+  color: #fff; /* Example text color */
+}
+
+.specialButton {
+  /* Styles for the special button */
+  background-color: $dark; /* Example background color */
+  color: #fff;
+  font-size: 17px;
+  border-radius: 12px;
+  margin-top: 1%;
+  cursor: pointer;
+  /* Add any other desired styles */
+}
+
+.specialButton:hover {
+  /* Styles when the special button is hovered */
+  background-color: $primary; /* Example background color */
+}
+
+.specialButton:focus {
+  /* Styles when the special button is focused */
+  outline: none;
+  box-shadow: 0 0 5px $primary; /* Example box shadow */
+}
+
+.specialButton:active {
+  /* Styles when the special button is pressed */
+  transform: translateY(1px);
+}
+
+.specialButton:visited {
+  /* Styles for the special button when it has been visited */
+  color: #fff; /* Example text color */
+}
+
+.specialButtons {
+  display: flex;
+  justify-content: flex-end;
+  flex-direction: column;
+  align-items: center;
+}

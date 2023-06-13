@@ -1,0 +1,60 @@
+@import "../../Styles/variables.scss";
+
+.form_container {
+  display: flex;
+  background-color: rgba(255, 255, 255, 0.8); /* Translucent color */
+  box-shadow: 0.5px 0.5px #888888;
+
+  backdrop-filter: blur(
+    10px
+  ); /* Apply a blur effect to create a glass-like appearance */
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  text-align: center;
+  // border: 2px solid #ccc;
+  border-radius: 8px;
+  // box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  width: 80%; /* Adjust the width as needed */
+  max-width: 600px; /* Set a maximum width to limit the container's width */
+  margin: 0 auto; /* Center the box horizontally */
+  margin-top: 30px; /* Adjust the margin-top to center vertically */
+}
+
+.input_wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.input {
+  flex: 1;
+  padding: 10px;
+  margin-right: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.submit_button {
+  padding: 4px;
+  background-color: $dark; /* Change the background color to #FFFBF0 */
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+}
+
+.report_id {
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+
+.report_status {
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+.error_message {
+  font-size: 16px;
+  color: black;
+}
