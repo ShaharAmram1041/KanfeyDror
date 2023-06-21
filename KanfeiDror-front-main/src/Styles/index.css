@@ -1,0 +1,19 @@
+@import url("https://fonts.googleapis.com/css2?family=Alef:wght@700&family=Rubik+Spray+Paint&family=Varela+Round&display=swap");
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Alef", sans-serif, "Rubik Spray Paint", cursive, "Varela Round", sans-serif;
+  background-image: url(../photos/bg12.png);
+  background-color: white;
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  width: 100%;
+  height: 100vh;
+}
+
+#root {
+  height: 100%;
+}/*# sourceMappingURL=index.css.map */

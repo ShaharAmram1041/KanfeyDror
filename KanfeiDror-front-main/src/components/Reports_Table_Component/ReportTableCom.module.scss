@@ -1,0 +1,174 @@
+@import "../../Styles/variables.scss";
+
+.graphs {
+  /* Styles for the default button */
+  background-color: $dark; /* Example background color */
+  color: #fff;
+  font-size: 17px;
+  border-radius: 12px;
+  margin-top: 1%;
+  cursor: pointer;
+  /* Add any other desired styles */
+}
+
+.graphs:hover {
+  /* Styles when the default button is hovered */
+  background-color: $primary; /* Example background color */
+}
+
+.graphs:focus {
+  /* Styles when the default button is focused */
+  outline: none;
+  box-shadow: 0 0 5px #ff4d4d; /* Example box shadow */
+}
+
+.graphs:active {
+  /* Styles when the default button is pressed */
+  transform: translateY(1px);
+}
+
+.graphs:visited {
+  /* Styles for the default button when it has been visited */
+  color: #fff; /* Example text color */
+}
+
+.specialButton {
+  /* Styles for the special button */
+  background-color: $dark; /* Example background color */
+  color: #fff;
+  font-size: 17px;
+  border-radius: 12px;
+  margin-top: 1%;
+  cursor: pointer;
+  /* Add any other desired styles */
+}
+
+.specialButton:hover {
+  /* Styles when the special button is hovered */
+  background-color: $primary; /* Example background color */
+}
+
+.specialButton:focus {
+  /* Styles when the special button is focused */
+  outline: none;
+  box-shadow: 0 0 5px $primary; /* Example box shadow */
+}
+
+.specialButton:active {
+  /* Styles when the special button is pressed */
+  transform: translateY(1px);
+}
+
+.specialButton:visited {
+  /* Styles for the special button when it has been visited */
+  color: #fff; /* Example text color */
+}
+
+.specialButtons {
+  display: flex;
+  justify-content: flex-end;
+  flex-direction: column;
+  align-items: center;
+}
+
+.MuiDialogContent,
+.css-ypiqx9-MuiDialogContent {
+  direction: rtl;
+}
+
+.formContainer {
+  margin: 10px;
+  align-items: center;
+  text-align: center;
+}
+
+.heading {
+  font-size: 1.5rem;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.labell {
+  color: #333;
+  font-size: 1rem;
+}
+
+.labelll {
+  color: #333;
+  font-size: 1rem;
+  margin: 5px;
+}
+
+.textarea {
+  resize: none;
+}
+
+.selectInput {
+  width: 100%;
+  height: 2.5rem;
+  padding: 5px;
+  font-size: 1rem;
+  border-radius: 12px;
+  border: 1px solid #ccc;
+  margin-bottom: 10px;
+}
+
+.textInput {
+  width: 100%;
+  padding: 5px;
+  font-size: 1rem;
+  border-radius: 12px;
+  border: 1px solid #ccc;
+  margin-bottom: 10px;
+}
+
+.submitButton {
+  width: 20%;
+  height: 2.5rem;
+  background-color: #007bff;
+  color: #fff;
+  font-size: 1rem;
+  font-weight: bold;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+}
+
+.submitButton:hover {
+  background-color: #0056b3;
+}
+
+.buttonContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 100%;
+}
+
+.button {
+  width: 100%;
+  height: 40px;
+  background-color: #007bff;
+  color: #fff;
+  font-size: 1rem;
+  font-weight: bold;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  margin-bottom: 10px;
+}
+
+.exitButton {
+  background-color: #dc3545;
+}
+
+.exitButton:hover {
+  background-color: #b02a37;
+}

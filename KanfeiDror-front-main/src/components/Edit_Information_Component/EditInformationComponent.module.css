@@ -1,0 +1,75 @@
+@import url("https://fonts.googleapis.com/css2?family=Alef:wght@700&family=Rubik+Spray+Paint&family=Varela+Round&display=swap");
+.edit_information {
+  justify-content: center;
+  align-items: center;
+  font-family: "Alef", sans-serif, "Rubik Spray Paint", cursive, "Varela Round", sans-serif;
+}
+@media (max-width: 768px) {
+  .edit_information {
+    flex-direction: column;
+    padding: 20px;
+  }
+}
+
+.container {
+  width: 80%;
+}
+
+.edit_information__title {
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+@media (max-width: 768px) {
+  .edit_information__title {
+    font-size: 20px;
+  }
+}
+
+.edit_information__field {
+  margin-bottom: 20px;
+}
+
+.edit_information__label {
+  font-weight: bold;
+}
+
+.edit_information__input,
+.edit_information__textarea {
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-family: "Alef", sans-serif, "Rubik Spray Paint", cursive, "Varela Round", sans-serif;
+}
+@media (max-width: 768px) {
+  .edit_information__input,
+  .edit_information__textarea {
+    font-size: 14px;
+  }
+}
+
+.edit_information__textarea {
+  height: 200px;
+  white-space: pre-wrap; /* or pre-line */
+}
+
+.edit_information__button {
+  padding: 10px 20px;
+  font-size: 18px;
+  background-color: #00d3ff;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+@media (max-width: 768px) {
+  .edit_information__button {
+    font-size: 16px;
+    padding: 8px 16px;
+  }
+}
+
+.edit_information__button:hover {
+  background-color: #00dfff;
+}/*# sourceMappingURL=EditInformationComponent.module.css.map */

@@ -1,0 +1,44 @@
+@import url("https://fonts.googleapis.com/css2?family=Alef:wght@700&family=Rubik+Spray+Paint&family=Varela+Round&display=swap");
+.container {
+  max-width: 60%;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.title {
+  text-align: center;
+  font-size: 24px;
+  margin-bottom: 20px;
+  margin-top: 20px;
+}
+
+.formGroup {
+  margin-bottom: 20px;
+}
+
+.label {
+  font-weight: bold;
+  color: black;
+}
+
+.select {
+  padding: 8px;
+  margin: 10px; /* Add margin-bottom to create space */
+}
+
+.button {
+  padding: 8px 16px;
+  background-color: #ff455a; /* Example background color */
+  color: #fff;
+  border-radius: 12px;
+  border: none;
+  cursor: pointer;
+}
+
+.button:hover {
+  background-color: #fd263f; /* Example hover background color */
+}
+
+.managerContainer {
+  margin-right: 10px !important;
+}/*# sourceMappingURL=RemoveAdministratorPage.module.css.map */

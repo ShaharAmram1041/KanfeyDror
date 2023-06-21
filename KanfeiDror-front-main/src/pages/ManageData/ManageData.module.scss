@@ -1,0 +1,109 @@
+@import "../../Styles/variables";
+
+// YourComponent.module.scss
+
+.div_button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  //   height: 100vh;
+  margin-top: 10px;
+}
+
+.myButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #ff455a;
+  color: white;
+  border: 1px solid #ccc;
+  border-radius: 12px;
+  padding: 8px 12px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    background-color: #00d3ff;
+  }
+
+  .icon {
+    font-size: 1.2rem;
+    margin-right: 0.5rem;
+    color: white;
+  }
+
+  .text {
+    font-size: 1rem;
+    color: white;
+  }
+}
+
+.formContainer {
+  margin: 10px;
+  width: 400px;
+  align-items: center;
+  text-align: center;
+}
+
+.label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 5px;
+  font-size: 1rem;
+  color: #333;
+}
+
+
+.textInput {
+  width: 100%;
+  padding: 5px;
+  font-size: 1rem;
+  border-radius: 12px;
+  border: 1px solid #ccc;
+  margin-bottom: 10px;
+}
+
+
+.submitButton {
+  width: 20%;
+  height: 2.5rem;
+  background-color: #007bff;
+  color: #fff;
+  font-size: 1rem;
+  font-weight: bold;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+}
+
+.submitButton:hover {
+  background-color: #0056b3;
+}
+
+.buttonContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 100%;
+}
+
+.button {
+  width: 100%;
+  height: 40px;
+  background-color: #007bff;
+  color: #fff;
+  font-size: 1rem;
+  font-weight: bold;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  margin-bottom: 10px;
+}
+
+.exitButton {
+  background-color: #dc3545;
+}
+
+.exitButton:hover {
+  background-color: #b02a37;
+}

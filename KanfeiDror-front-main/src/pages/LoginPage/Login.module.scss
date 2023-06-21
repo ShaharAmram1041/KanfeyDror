@@ -1,0 +1,79 @@
+.login {
+  background-color: rgba(255, 255, 255, 0.4); /* Translucent color */
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  margin-right: 20%;
+  margin-left: 20%;
+  margin-top: 10%;
+
+  .loginTitle {
+    font-size: 24px;
+    margin-bottom: 20px;
+  }
+
+  .loginInput {
+    width: 70%;
+    display: block;
+    padding: 10px;
+    margin: 0 auto 10px; /* Center the input fields horizontally */
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+
+    &:focus {
+      outline: none;
+      border-color: #6a80f5;
+    }
+  }
+
+  .loginButton {
+    background-color: #6a80f5;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+
+    &:hover {
+      background-color: #4e68d6;
+    }
+  }
+
+  .forgotPasswordButton {
+    background-color: transparent;
+    color: #6a80f5;
+    border: none;
+    font-size: 14px;
+    cursor: pointer;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  // Responsive Styles
+  @media screen and (max-width: 600px) {
+    .login {
+      padding: 10px;
+    }
+
+    .loginTitle {
+      font-size: 20px;
+    }
+
+    .loginInput {
+      font-size: 14px;
+    }
+
+    .loginButton {
+      font-size: 14px;
+    }
+
+    .forgotPasswordButton {
+      font-size: 12px;
+    }
+  }
+}
