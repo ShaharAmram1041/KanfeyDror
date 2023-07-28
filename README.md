@@ -1,7 +1,7 @@
 
 # Kanfey Dror - Boycott and Social Ostracism Reporting Website
 
-![image](https://user-images.githubusercontent.com/126160304/233830258-6f4bacd2-0836-4c11-8d7b-389301148fb2.png)
+<img src="https://user-images.githubusercontent.com/126160304/233830258-6f4bacd2-0836-4c11-8d7b-389301148fb2.png" width="300">
 
 
 
